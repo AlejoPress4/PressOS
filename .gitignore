@@ -1,0 +1,7 @@
+# IDEs and editors #
+####################
+.vscode/
+
+# Python #
+##########
+**/__pycache__/
