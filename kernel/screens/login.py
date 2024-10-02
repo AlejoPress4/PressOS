@@ -1,8 +1,11 @@
+import re
 from PyQt5 import QtCore, QtGui, QtWidgets
+from kernel.modules.functions import press_os
+from kernel.secrets import users
 
 class Ui_Login_Window(object):
     def setupUi(self, Main_Window):
-        Main_Window.setObjectName("Main_Window")
+        Main_Window.setObjectName("Login_Window")
         # Main_Window.resize(1920, 1008)
         Main_Window.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.centralwidget = QtWidgets.QWidget(Main_Window)
@@ -65,4 +68,21 @@ class Ui_Login_Window(object):
         self.change_btn.setText(_translate("Main_Window", "Change User"))
         self.pushButton.setText(_translate("Main_Window", "Press"))
         self.pass_lb.setText(_translate("Main_Window", "Password"))
-        self.user_now.setText(_translate("Main_Window", "usering "))
+        self.user_now.setText(_translate("Main_Window", users['def_usr']))
+
+    def close(self):
+        self.centralwidget.close()
+
+
+    def login(self):
+        password = self.pass_input.toPlainText()        
+        if press_os().login(password):
+            # send to desktop
+            return True
+        else:
+            self.pass_input.setText('')
+            return False
+
+        
+        
+        
