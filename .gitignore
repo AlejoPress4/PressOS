@@ -5,3 +5,4 @@
 # Python cache #
 ##########
 **/*.pyc
+kernel/screens/__pycache__/login.cpython-311.pyc
