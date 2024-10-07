@@ -2,12 +2,14 @@ import re
 from PyQt5 import QtCore, QtGui, QtWidgets
 from kernel.modules.functions import press_os
 from kernel.secrets import users
+from graphic_resources.styles.styles import *
 
 class Ui_Login_Window(object):
     def setupUi(self, Main_Window):
         Main_Window.setObjectName("Login_Window")
         # Main_Window.resize(1920, 1008)
         Main_Window.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        Main_Window.setStyleSheet(desktopST)
         self.centralwidget = QtWidgets.QWidget(Main_Window)
         self.centralwidget.setObjectName("centralwidget")
         self.group_box = QtWidgets.QGroupBox(self.centralwidget)
@@ -61,6 +63,8 @@ class Ui_Login_Window(object):
 
         self.retranslateUi(Main_Window)
         QtCore.QMetaObject.connectSlotsByName(Main_Window)
+        
+        apply_styles(Main_Window, desktopST)
 
     def retranslateUi(self, Main_Window):
         _translate = QtCore.QCoreApplication.translate
