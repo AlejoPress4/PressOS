@@ -18,5 +18,4 @@ class press_os ():
             return True
         else:
             return False
-       
         

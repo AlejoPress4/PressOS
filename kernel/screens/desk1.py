@@ -87,8 +87,8 @@ class Ui_Desk_Window(object):
             {"name": "Notepad", "command": ["notepad.exe"]},
             {"name": "Paint", "command": ["mspaint.exe"]},
             {"name": "Photos", "command": ["explorer.exe", "shell:AppsFolder\\Microsoft.Windows.Photos_8wekyb3d8bbwe!App"]},
-            {"name": "Media Player", "command": ["notepad.exe"]},
             {"name": "Calculator", "command": ["calc.exe"]},
+            # {"name": "", "command": [""]},
         ]
 
         # Agregar etiquetas a apps_bar
