@@ -1,11 +1,9 @@
-import os, sys
+import subprocess
+import os, sys, cv2
 from kernel.secrets import *
+from PyQt5 import QtCore
 
 class press_os ():
-
-    
-
-
     def read_users (self, path):
         with open (path, 'r') as file:
             users = file.readlines()
@@ -18,4 +16,4 @@ class press_os ():
             return True
         else:
             return False
-        
+    

@@ -1,15 +1,15 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import subprocess
 from kernel.modules.config.functions_ui import toggle_frames, add_labels_to_layout, ClickableLabel
-
-
+from graphic_resources.styles.styles import *
+import cv2
 class Ui_Desk_Window(object):
     def setupUi(self, Desk_Window):
         Desk_Window.setObjectName("Desk_Window")
-        Desk_Window.resize(1920, 1080)
+        # Desk_Window.resize(1920, 1080)
         self.centralwidget = QtWidgets.QWidget(Desk_Window)
         self.centralwidget.setObjectName("centralwidget")
-        
+        apply_styles(Desk_Window, deskST)
         self.apps_bar = QtWidgets.QFrame(self.centralwidget)
         self.apps_bar.setGeometry(QtCore.QRect(0, 70, 120, 811))
         self.apps_bar.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -18,11 +18,12 @@ class Ui_Desk_Window(object):
         
         # Usar un QVBoxLayout para apps_bar
         self.apps_bar_layout = QtWidgets.QVBoxLayout(self.apps_bar)
-        self.apps_bar_layout.setContentsMargins(0, 0, 0, 90)  # Dejar espacio en la parte inferior
+        self.apps_bar_layout.setGeometry(QtCore.QRect(0, 0, 120, 811))
+        self.apps_bar_layout.setContentsMargins(15, 0, 0, 90)  # Dejar espacio en la parte inferior
         self.apps_bar.setLayout(self.apps_bar_layout)
         
         self.btn_apps = QtWidgets.QPushButton(self.apps_bar)
-        self.btn_apps.setGeometry(QtCore.QRect(10, 720, 91, 71))
+        self.btn_apps.setGeometry(QtCore.QRect(20, 720, 90, 90))
         self.btn_apps.setObjectName("btn_apps")
         
         self.apps_window = QtWidgets.QFrame(self.centralwidget)
@@ -35,9 +36,6 @@ class Ui_Desk_Window(object):
         # Usar un QGridLayout para apps_window
         self.apps_window_layout = QtWidgets.QGridLayout(self.apps_window)
         self.apps_window_layout.setObjectName("apps_window_layout")
-        # poner transparente apps_window_layout
-        self.apps_window_layout.setContentsMargins(0, 0, 0, 0)
-        
         
         self.options_apps = QtWidgets.QFrame(self.apps_window)
         self.options_apps.setGeometry(QtCore.QRect(0, 709, 1571, 71))
@@ -86,6 +84,7 @@ class Ui_Desk_Window(object):
         self.applications = [
             {"name": "Notepad", "command": ["notepad.exe"]},
             {"name": "Paint", "command": ["mspaint.exe"]},
+            {"name" : "Camera", "command": ["self.open_camera"]},
             {"name": "Photos", "command": ["explorer.exe", "shell:AppsFolder\\Microsoft.Windows.Photos_8wekyb3d8bbwe!App"]},
             {"name": "Calculator", "command": ["calc.exe"]},
             # {"name": "", "command": [""]},
@@ -98,7 +97,7 @@ class Ui_Desk_Window(object):
         add_labels_to_layout(self.applications, self.apps_window_layout, self.apps_window, self.open_application, is_grid=True)
 
         # Conectar el botón para alternar la visibilidad de los frames
-        self.btn_apps.clicked.connect(self.toggle_apps_window)
+        self.btn_apps.clicked.connect(lambda: self.toggle_apps_window(self.apps_bar, self.apps_window))
 
         Desk_Window.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(Desk_Window)

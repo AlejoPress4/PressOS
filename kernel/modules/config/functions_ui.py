@@ -32,7 +32,8 @@ def add_labels_to_layout(applications, layout, parent, open_application, is_grid
 		label.setObjectName(f"lbl_{app['name'].lower()}")
 		label.setText(app["name"])
 		label.setAlignment(QtCore.Qt.AlignCenter)
-		label.setStyleSheet("border: 1px solid black; padding: 5px;")
+		label.setStyleSheet("border: 1px solid white; color: white;")
+		label.setFixedSize(85, 85)
 		label.command = app["command"]
 		label.clicked.connect(lambda cmd=app["command"]: open_application(cmd))
 		if is_grid:
