@@ -2,7 +2,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import subprocess
 from kernel.modules.config.functions_ui import toggle_frames, add_labels_to_layout, ClickableLabel
 from graphic_resources.styles.styles import *
+from kernel.modules.config.functions_ui import *
 import cv2
+
 class Ui_Desk_Window(object):
     def setupUi(self, Desk_Window):
         Desk_Window.setObjectName("Desk_Window")
@@ -22,20 +24,20 @@ class Ui_Desk_Window(object):
         self.apps_bar_layout.setContentsMargins(15, 0, 0, 90)  # Dejar espacio en la parte inferior
         self.apps_bar.setLayout(self.apps_bar_layout)
         
-        self.btn_apps = QtWidgets.QPushButton(self.apps_bar)
-        self.btn_apps.setGeometry(QtCore.QRect(20, 720, 90, 90))
-        self.btn_apps.setObjectName("btn_apps")
-        
         self.apps_window = QtWidgets.QFrame(self.centralwidget)
         self.apps_window.setGeometry(QtCore.QRect(160, 70, 1571, 781))
         self.apps_window.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.apps_window.setFrameShadow(QtWidgets.QFrame.Raised)
         self.apps_window.setObjectName("apps_window")
-        self.apps_window.hide()  # Ocultar inicialmente
+        # self.apps_window.hide()  # Ocultar inicialmente
+        
+        self.btn_apps = QtWidgets.QPushButton(self.apps_bar)
+        self.btn_apps.setGeometry(QtCore.QRect(20, 720, 90, 90))
+        self.btn_apps.setObjectName("btn_apps")
         
         # Usar un QGridLayout para apps_window
         self.apps_window_layout = QtWidgets.QGridLayout(self.apps_window)
-        self.apps_window_layout.setObjectName("apps_window_layout")
+        self.apps_window.setLayout(self.apps_window_layout)
         
         self.options_apps = QtWidgets.QFrame(self.apps_window)
         self.options_apps.setGeometry(QtCore.QRect(0, 709, 1571, 71))
@@ -47,6 +49,7 @@ class Ui_Desk_Window(object):
         self.shutdown.setGeometry(QtCore.QRect(1470, 10, 61, 51))
         self.shutdown.setText("")
         self.shutdown.setObjectName("shutdown")
+        self.shutdown.clicked.connect(lambda: shutdown(self.desk_screen, self))
         
         self.user_lb = QtWidgets.QLabel(self.options_apps)
         self.user_lb.setGeometry(QtCore.QRect(40, 10, 501, 51))
@@ -60,6 +63,7 @@ class Ui_Desk_Window(object):
         self.reboot.setGeometry(QtCore.QRect(1380, 10, 61, 51))
         self.reboot.setText("")
         self.reboot.setObjectName("reboot")
+        self.shutdown.clicked.connect(lambda: reboot(self.login_screen, self))
         
         self.asist_btn = QtWidgets.QPushButton(self.centralwidget)
         self.asist_btn.setGeometry(QtCore.QRect(940, 890, 91, 81))
@@ -84,7 +88,7 @@ class Ui_Desk_Window(object):
         self.applications = [
             {"name": "Notepad", "command": ["notepad.exe"]},
             {"name": "Paint", "command": ["mspaint.exe"]},
-            {"name" : "Camera", "command": ["self.open_camera"]},
+            {"name" : "Music", "command": ["mediaplayer.exe"]},
             {"name": "Photos", "command": ["explorer.exe", "shell:AppsFolder\\Microsoft.Windows.Photos_8wekyb3d8bbwe!App"]},
             {"name": "Calculator", "command": ["calc.exe"]},
             # {"name": "", "command": [""]},
@@ -97,7 +101,7 @@ class Ui_Desk_Window(object):
         add_labels_to_layout(self.applications, self.apps_window_layout, self.apps_window, self.open_application, is_grid=True)
 
         # Conectar el botón para alternar la visibilidad de los frames
-        self.btn_apps.clicked.connect(lambda: self.toggle_apps_window(self.apps_bar, self.apps_window))
+        self.btn_apps.clicked.connect(self.toggle_apps_window)
 
         Desk_Window.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(Desk_Window)
@@ -116,12 +120,11 @@ class Ui_Desk_Window(object):
         subprocess.Popen(command)
 
     def toggle_apps_window(self):
-        print("Toggle apps window", self.apps_bar.isVisible())
         if self.apps_bar.isVisible():
-            toggle_frames(self.apps_bar, self.apps_window, True)
+            toggle_frames(self.apps_bar, self.apps_window)
         else:
-            toggle_frames(self.apps_bar, self.apps_window, False)
-    
+            toggle_frames(self.apps_window, self.apps_bar)
+            
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)

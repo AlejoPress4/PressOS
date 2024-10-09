@@ -10,9 +10,7 @@ class press_os ():
         print (users)
 
     def login (self, password):
-        print(password, def_usr['password'])
         if password == def_usr['password']:
-            print("Login?")
             return True
         else:
             return False

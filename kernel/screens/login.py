@@ -3,6 +3,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from kernel.modules.config.functions import press_os
 from kernel.secrets import users
 from graphic_resources.styles.styles import *
+from PyQt5.QtCore import pyqtSignal
+from kernel.modules.config.functions_ui import *
 
 class Ui_Login_Window(object):
     def setupUi(self, Main_Window):
@@ -60,14 +62,16 @@ class Ui_Login_Window(object):
 
         # Botones de apagado y reinicio
         self.shutdown = QtWidgets.QPushButton(self.centralwidget)
-        self.shutdown.setGeometry(QtCore.QRect(1670, 900, 71, 61))
+        self.shutdown.setGeometry(QtCore.QRect(1670, 900, 81, 71))
         self.shutdown.setText("")
         self.shutdown.setObjectName("shutdown")
+        self.shutdown.clicked.connect(lambda: shutdown(self.login_screen, self))
 
         self.reboot = QtWidgets.QPushButton(self.centralwidget)
-        self.reboot.setGeometry(QtCore.QRect(1780, 900, 71, 61))
+        self.reboot.setGeometry(QtCore.QRect(1780, 900, 71, 71))
         self.reboot.setText("")
         self.reboot.setObjectName("reboot")
+        self.shutdown.clicked.connect(lambda: reboot(self.login_screen, self))
 
         # Marco de la hora
         self.time_frame = QtWidgets.QFrame(self.centralwidget)
@@ -104,8 +108,4 @@ class Ui_Login_Window(object):
             return True
         else:
             self.pass_input.setText('')
-            return False
-
-        
-        
-        
+            return False     

@@ -1,26 +1,19 @@
 from PyQt5.QtCore import QPropertyAnimation, QRect, pyqtSignal
 from PyQt5.QtWidgets import QLabel
+from PyQt5.QtGui import QPixmap
 from PyQt5 import QtCore
 
-def toggle_frames(frame1, frame2, show_window):
-	"""
-	Alterna la visibilidad de los frames apps_bar_layout y apps_window con animación.
-	"""
-	if show_window:
-		frame1.hide()
-		frame2.show()
-		animate_bubble(frame2)
-	else:
-		frame2.hide()
-		frame1.show()
-        
+def toggle_frames(frame1, frame2):
+    frame1.hide()
+    frame2.show()
+    animate_bubble(frame2)
 
 def animate_bubble(frame):
-	animation = QPropertyAnimation(frame, b"geometry")
-	animation.setDuration(500)
-	animation.setStartValue(QRect(frame.x() + frame.width() // 2, frame.y() + frame.height() // 2, 0, 0))
-	animation.setEndValue(QRect(frame.x(), frame.y(), frame.width(), frame.height()))
-	animation.start()
+    animation = QPropertyAnimation(frame, b"geometry")
+    animation.setDuration(500)
+    animation.setStartValue(QRect(frame.x() + frame.width() // 2, frame.y() + frame.height() // 2, 0, 0))
+    animation.setEndValue(QRect(frame.x(), frame.y(), frame.width(), frame.height()))
+    animation.start()
 
 def add_labels_to_layout(applications, layout, parent, open_application, is_grid=False):
 	"""
@@ -29,11 +22,13 @@ def add_labels_to_layout(applications, layout, parent, open_application, is_grid
 	row, col = 0, 0
 	for app in applications:
 		label = ClickableLabel(parent)
-		label.setObjectName(f"lbl_{app['name'].lower()}")
-		label.setText(app["name"])
+		label.setObjectName(f"icon_{app['name'].lower()}")  # Nombre del objeto basado en la app
 		label.setAlignment(QtCore.Qt.AlignCenter)
-		label.setStyleSheet("border: 1px solid white; color: white;")
-		label.setFixedSize(85, 85)
+        # Cargar imagen basada en el nombre de la aplicación
+		icon_path = f"./graphic_resources/icons/{app['name'].lower()}.png"
+		pixmap = QPixmap(icon_path).scaled(81, 81, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+		label.setPixmap(pixmap)
+		# label.setFixedSize(85, 85)
 		label.command = app["command"]
 		label.clicked.connect(lambda cmd=app["command"]: open_application(cmd))
 		if is_grid:
@@ -44,6 +39,15 @@ def add_labels_to_layout(applications, layout, parent, open_application, is_grid
 				row += 1
 		else:
 			layout.addWidget(label)
+
+def shutdown(self):
+    self.login_screen.close()
+    self.desktop_screen.close()
+
+def reboot(self):
+    self.login_screen.refresh()
+    self.desktop_screen.refresh()
+    
 
 class ClickableLabel(QLabel):
 	clicked = pyqtSignal()

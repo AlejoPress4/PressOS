@@ -1,5 +1,5 @@
-users = {'def_usr': "mariamordemivida"}
+users = {'def_usr': "Press"}
 
 
 # aplicar cifrado a password
-def_usr = {'username': "mariamordemivida", 'password': "0424"}
+def_usr = {'username': "Press", 'password': "0424"}

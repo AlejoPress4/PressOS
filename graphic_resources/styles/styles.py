@@ -14,16 +14,14 @@ QWidget#centralwidget {
 }
 
 QPushButton#shutdown {
-    qproperty-icon: url('./graphic_resources/icons/shutdown.svg');
-    qproperty-iconSize: 61px 61px;
+    qproperty-icon: url('./graphic_resources/icons/shutdown.png');
+    qproperty-iconSize: 63px 63px;
     background: transparent;
-    color: white;
 }
 QPushButton#reboot {
-    qproperty-icon: url('./graphic_resources/icons/reboot.svg');
+    qproperty-icon: url('./graphic_resources/icons/reboot.png');
     qproperty-iconSize: 64px 64px;
     background: transparent;
-    color: white;
 }
 
 QFrame#photo_box {
@@ -53,30 +51,49 @@ QFrame#apps_bar {
 border: 2px solid #FF5733;  # Cambia el color del borde aquí
 }
 
-QLabel#Calculator {
-    qproperty-pixmap: url('./graphic_resources/icons/calculator.png');
-    background: transparent;
+QLabel#icon_Calculator {
+    background-image: url('./graphic_resources/icons/calculator.png');
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
-QLabel#Notepad {
-    qproperty-pixmap: url('./graphic_resources/icons/notepad.png');
-    background: transparent;
+QLabel#icon_Notepad {
+    background-image: url('./graphic_resources/icons/notepad.png');
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
-QLabel#Camera{
-    qproperty-pixmap: url('./graphic_resources/icons/notepad.png);
-    background: transparent;
+QLabel#icon_Camera{
+    background-image: url('./graphic_resources/icons/notepad.png);
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
-QLabel#Photos{
-    qproperty-pixmap: url('./graphic_resources/icons/notepad.png');
-    background: transparent;
+QLabel#icon_Photos{
+    background-image: url('./graphic_resources/icons/notepad.png');
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
-QLabel#Paint {
-    qproperty-pixmap: url('./graphic_resources/icons/paint.png');
-    background: transparent;
+QLabel#icon_Paint {
+    background-image:url('./graphic_resources/icons/paint.png');
+    background-repeat: no-repeat;
+    background-position: center;
 }
+
+QLabel#icon_Music {
+    background-image: url('./graphic_resources/icons/music.png');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+QPushButton#btn_app{
+    background-image: url('./graphic_resources/icons/btnapps.png')
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
 
 """
 def set_photo(photo_box, image_path):
