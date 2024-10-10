@@ -1,9 +1,9 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-import subprocess
+import subprocess, cv2
 from kernel.modules.config.functions_ui import toggle_frames, add_labels_to_layout, ClickableLabel
 from graphic_resources.styles.styles import *
 from kernel.modules.config.functions_ui import *
-import cv2
+from kernel.secrets import def_usr
 
 class Ui_Desk_Window(object):
     def setupUi(self, Desk_Window):
@@ -29,10 +29,11 @@ class Ui_Desk_Window(object):
         self.apps_window.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.apps_window.setFrameShadow(QtWidgets.QFrame.Raised)
         self.apps_window.setObjectName("apps_window")
-        # self.apps_window.hide()  # Ocultar inicialmente
+        #self.apps_window.hide()  # Ocultar inicialmente
         
         self.btn_apps = QtWidgets.QPushButton(self.apps_bar)
         self.btn_apps.setGeometry(QtCore.QRect(20, 720, 90, 90))
+        self.btn_apps.setText("")
         self.btn_apps.setObjectName("btn_apps")
         
         # Usar un QGridLayout para apps_window
@@ -56,7 +57,7 @@ class Ui_Desk_Window(object):
         font = QtGui.QFont()
         font.setPointSize(20)
         self.user_lb.setFont(font)
-        self.user_lb.setText("")
+        self.user_lb.setText(f"User: {def_usr['username']}")
         self.user_lb.setObjectName("user_lb")
         
         self.reboot = QtWidgets.QPushButton(self.options_apps)
@@ -69,6 +70,17 @@ class Ui_Desk_Window(object):
         self.asist_btn.setGeometry(QtCore.QRect(940, 890, 91, 81))
         self.asist_btn.setText("")
         self.asist_btn.setObjectName("asist_btn")
+        self.asist_btn.clicked.connect(lambda: open_asist(self.asist_window))
+        
+        # Crear el layout asist_window como QVBoxLayout
+        self.asist_window_layout = QtWidgets.QVBoxLayout()
+        
+        # Crear un widget contenedor para el layout
+        self.asist_window = QtWidgets.QWidget(self.centralwidget)
+        self.asist_window.setGeometry(QtCore.QRect(160, 70, 800, 800))
+        self.asist_window.setLayout(self.asist_window_layout)
+        self.asist_window.setObjectName("asist_window")
+        self.asist_window.hide()  # Ocultar inicialmente
         
         self.time_desk = QtWidgets.QFrame(self.centralwidget)
         self.time_desk.setGeometry(QtCore.QRect(1530, 850, 361, 121))
@@ -79,7 +91,7 @@ class Ui_Desk_Window(object):
         self.time_desk.setObjectName("time_desk")
         
         self.logo = QtWidgets.QFrame(self.centralwidget)
-        self.logo.setGeometry(QtCore.QRect(1770, 10, 120, 80))
+        self.logo.setGeometry(QtCore.QRect(1770, 10, 120, 180))
         self.logo.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.logo.setFrameShadow(QtWidgets.QFrame.Raised)
         self.logo.setObjectName("logo")

@@ -87,10 +87,16 @@ QLabel#icon_Music {
     background-position: center;
 }
 
-QPushButton#btn_app{
-    background-image: url('./graphic_resources/icons/btnapps.png')
-    background-repeat: no-repeat;
-    background-position: center;
+QPushButton#btn_apps{
+    qproperty-icon: url('./graphic_resources/icons/music.png');
+    qproperty-iconSize: 85px 85px;
+    background: transparent;
+}
+QPushButton#btn_apps:hover {
+    background-color: #2980b9;
+}
+QPushButton#btn_apps:pressed {
+    background-color: #1c598a;  /* Color de fondo al presionar */
 }
 
 

@@ -22,7 +22,7 @@ def add_labels_to_layout(applications, layout, parent, open_application, is_grid
 	row, col = 0, 0
 	for app in applications:
 		label = ClickableLabel(parent)
-		label.setObjectName(f"icon_{app['name'].lower()}")  # Nombre del objeto basado en la app
+		label.setObjectName(f"icon_{app['name'].lower()}")  
 		label.setAlignment(QtCore.Qt.AlignCenter)
         # Cargar imagen basada en el nombre de la aplicación
 		icon_path = f"./graphic_resources/icons/{app['name'].lower()}.png"
@@ -48,7 +48,9 @@ def reboot(self):
     self.login_screen.refresh()
     self.desktop_screen.refresh()
     
-
+def open_asist(self):
+    self.asist_window.show()
+    
 class ClickableLabel(QLabel):
 	clicked = pyqtSignal()
 
