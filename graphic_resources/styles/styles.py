@@ -51,52 +51,52 @@ QFrame#apps_bar {
 border: 2px solid #FF5733;  # Cambia el color del borde aquí
 }
 
-QLabel#icon_Calculator {
+QLabel#icon_calculator {
     background-image: url('./graphic_resources/icons/calculator.png');
     background-repeat: no-repeat;
     background-position: center;
 }
 
-QLabel#icon_Notepad {
+# QLabel#icon_notepad {
+#     background-image: url('./graphic_resources/icons/notepad.png');
+#     background-repeat: no-repeat;
+#     background-position: center;
+# }
+
+# QLabel#icon_camera{
+#     background-image: url('./graphic_resources/icons/notepad.png);
+#     background-repeat: no-repeat;
+#     background-position: center;
+# }
+
+QLabel#icon_photos{
     background-image: url('./graphic_resources/icons/notepad.png');
     background-repeat: no-repeat;
     background-position: center;
 }
 
-QLabel#icon_Camera{
-    background-image: url('./graphic_resources/icons/notepad.png);
-    background-repeat: no-repeat;
-    background-position: center;
-}
+# QLabel#icon_paint {
+#     background-image:url('./graphic_resources/icons/paint.png');
+#     background-repeat: no-repeat;
+#     background-position: center;
+# }
 
-QLabel#icon_Photos{
-    background-image: url('./graphic_resources/icons/notepad.png');
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-QLabel#icon_Paint {
-    background-image:url('./graphic_resources/icons/paint.png');
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-QLabel#icon_Music {
+QLabel#icon_music {
     background-image: url('./graphic_resources/icons/music.png');
     background-repeat: no-repeat;
     background-position: center;
 }
 
-QPushButton#btn_apps{
-    qproperty-icon: url('./graphic_resources/icons/music.png');
-    qproperty-iconSize: 85px 85px;
+Qlabel#icon_task Manager {
+    background-image: url('./graphic_resources/icons/task.png');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+QPushButton#btn_apps {
+    qproperty-icon: url('./graphic_resources/icons/shutdown.png');
+    qproperty-iconSize: 63px 63px;
     background: transparent;
-}
-QPushButton#btn_apps:hover {
-    background-color: #2980b9;
-}
-QPushButton#btn_apps:pressed {
-    background-color: #1c598a;  /* Color de fondo al presionar */
 }
 
 

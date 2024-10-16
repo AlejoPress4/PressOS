@@ -4,6 +4,7 @@ from kernel.modules.config.functions_ui import toggle_frames, add_labels_to_layo
 from graphic_resources.styles.styles import *
 from kernel.modules.config.functions_ui import *
 from kernel.secrets import def_usr
+from apps import *
 
 class Ui_Desk_Window(object):
     def setupUi(self, Desk_Window):
@@ -29,7 +30,7 @@ class Ui_Desk_Window(object):
         self.apps_window.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.apps_window.setFrameShadow(QtWidgets.QFrame.Raised)
         self.apps_window.setObjectName("apps_window")
-        #self.apps_window.hide()  # Ocultar inicialmente
+        self.apps_window.hide()  # Ocultar inicialmente
         
         self.btn_apps = QtWidgets.QPushButton(self.apps_bar)
         self.btn_apps.setGeometry(QtCore.QRect(20, 720, 90, 90))
@@ -98,11 +99,10 @@ class Ui_Desk_Window(object):
 
         # Lista de aplicaciones
         self.applications = [
-            {"name": "Notepad", "command": ["notepad.exe"]},
-            {"name": "Paint", "command": ["mspaint.exe"]},
-            {"name" : "Music", "command": ["mediaplayer.exe"]},
-            {"name": "Photos", "command": ["explorer.exe", "shell:AppsFolder\\Microsoft.Windows.Photos_8wekyb3d8bbwe!App"]},
-            {"name": "Calculator", "command": ["calc.exe"]},
+            {"name": "Notepad", "command": ["python" , "./apps/calculator.py"], "icon": "./graphic_resources/icons/calculator.png"},
+            {"name": "Paint", "command": ["python" , "./apps/photos.py"] , "icon": "./graphic_resources/icons/photos.png"},
+            {"name" : "Music", "command": ["python" , "./apps/music.py"], "icon": "./graphic_resources/icons/music.png"},
+            {"name": "Task Manager", "command": ["python" , "./apps/task.py"], "icon": "./graphic_resources/icons/task.png"}, 
             # {"name": "", "command": [""]},
         ]
 

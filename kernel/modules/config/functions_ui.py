@@ -22,12 +22,19 @@ def add_labels_to_layout(applications, layout, parent, open_application, is_grid
 	row, col = 0, 0
 	for app in applications:
 		label = ClickableLabel(parent)
-		label.setObjectName(f"icon_{app['name'].lower()}")  
+		#label.setObjectName(f"icon_{app['name'].lower()}")  
 		label.setAlignment(QtCore.Qt.AlignCenter)
-        # Cargar imagen basada en el nombre de la aplicación
-		icon_path = f"./graphic_resources/icons/{app['name'].lower()}.png"
-		pixmap = QPixmap(icon_path).scaled(81, 81, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
-		label.setPixmap(pixmap)
+  
+		icon_path = app["icon"]
+		pixmap = QPixmap(icon_path)
+  
+		#Cargar el pixmap en la etiqueta
+		if pixmap.isNull():
+			print(f"Error: La imagen en la ruta {icon_path} no se pudo cargar.")
+		else:
+			pixmap = pixmap.scaled(81, 81, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+			label.setPixmap(pixmap)
+		
 		# label.setFixedSize(85, 85)
 		label.command = app["command"]
 		label.clicked.connect(lambda cmd=app["command"]: open_application(cmd))
