@@ -1,4 +1,4 @@
-from PyQt5.QtGui import QPalette, QColor, QPixmap 
+from PyQt5.QtGui import QPalette, QColor, QPixmap
 from PyQt5.QtCore import Qt
 from PyQt5 import QtWidgets
 
@@ -47,60 +47,24 @@ QWidget#centralwidget {
     background-position: center;
     background-size: cover;
 }
-QFrame#apps_bar {
-border: 2px solid #FF5733;  # Cambia el color del borde aquí
-}
 
-QLabel#icon_calculator {
-    background-image: url('./graphic_resources/icons/calculator.png');
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-# QLabel#icon_notepad {
-#     background-image: url('./graphic_resources/icons/notepad.png');
-#     background-repeat: no-repeat;
-#     background-position: center;
-# }
-
-# QLabel#icon_camera{
-#     background-image: url('./graphic_resources/icons/notepad.png);
-#     background-repeat: no-repeat;
-#     background-position: center;
-# }
-
-QLabel#icon_photos{
-    background-image: url('./graphic_resources/icons/notepad.png');
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-# QLabel#icon_paint {
-#     background-image:url('./graphic_resources/icons/paint.png');
-#     background-repeat: no-repeat;
-#     background-position: center;
-# }
-
-QLabel#icon_music {
-    background-image: url('./graphic_resources/icons/music.png');
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-Qlabel#icon_task Manager {
-    background-image: url('./graphic_resources/icons/task.png');
-    background-repeat: no-repeat;
-    background-position: center;
-}
 
 QPushButton#btn_apps {
-    qproperty-icon: url('./graphic_resources/icons/shutdown.png');
-    qproperty-iconSize: 63px 63px;
+    qproperty-icon: url('./graphic_resources/icons/btn_apps.png');
     background: transparent;
+    qproperty-iconSize: 61px 51px;
 }
 
-
-
+QPushButton#shutdown {
+    qproperty-icon: url('./graphic_resources/icons/shutdown.png');
+    qproperty-iconSize: 61px 51px;
+    background: transparent;
+}
+QPushButton#reboot {
+    qproperty-icon: url('./graphic_resources/icons/reboot.png');
+    qproperty-iconSize: 64px 64px;
+    background: transparent;
+}
 """
 def set_photo(photo_box, image_path):
     photo_label = QtWidgets.QLabel(photo_box)

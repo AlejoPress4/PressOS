@@ -14,10 +14,14 @@ class Ui_Desk_Window(object):
         self.centralwidget.setObjectName("centralwidget")
         apply_styles(Desk_Window, deskST)
         self.apps_bar = QtWidgets.QFrame(self.centralwidget)
-        self.apps_bar.setGeometry(QtCore.QRect(0, 70, 120, 811))
+        self.apps_bar.setGeometry(QtCore.QRect(0, 70, 120, 816))
         self.apps_bar.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.apps_bar.setFrameShadow(QtWidgets.QFrame.Raised)
         self.apps_bar.setObjectName("apps_bar")
+        #RGBBB pa
+        self.timer = QTimer(self.apps_bar)
+        self.timer.timeout.connect(lambda: actualizar_color_borde(self.apps_bar))
+        self.timer.start(20)  # Actualiza cada 50ms
         
         # Usar un QVBoxLayout para apps_bar
         self.apps_bar_layout = QtWidgets.QVBoxLayout(self.apps_bar)
@@ -31,7 +35,11 @@ class Ui_Desk_Window(object):
         self.apps_window.setFrameShadow(QtWidgets.QFrame.Raised)
         self.apps_window.setObjectName("apps_window")
         self.apps_window.hide()  # Ocultar inicialmente
-        
+        # RGBBB para apps_window
+        self.timer_window = QTimer(self.apps_window)
+        self.timer_window.timeout.connect(lambda: actualizar_color_borde(self.apps_window))
+        self.timer_window.start(20)  # Actualiza cada 20ms
+           
         self.btn_apps = QtWidgets.QPushButton(self.apps_bar)
         self.btn_apps.setGeometry(QtCore.QRect(20, 720, 90, 90))
         self.btn_apps.setText("")
@@ -51,7 +59,7 @@ class Ui_Desk_Window(object):
         self.shutdown.setGeometry(QtCore.QRect(1470, 10, 61, 51))
         self.shutdown.setText("")
         self.shutdown.setObjectName("shutdown")
-        self.shutdown.clicked.connect(lambda: shutdown(self.desk_screen, self))
+        self.shutdown.clicked.connect(lambda: shutdown(self.desktop_screen, self))
         
         self.user_lb = QtWidgets.QLabel(self.options_apps)
         self.user_lb.setGeometry(QtCore.QRect(40, 10, 501, 51))
@@ -65,7 +73,7 @@ class Ui_Desk_Window(object):
         self.reboot.setGeometry(QtCore.QRect(1380, 10, 61, 51))
         self.reboot.setText("")
         self.reboot.setObjectName("reboot")
-        self.shutdown.clicked.connect(lambda: reboot(self.login_screen, self))
+        self.reboot.clicked.connect(lambda: reboot(self.desktop_screen, self))
         
         self.asist_btn = QtWidgets.QPushButton(self.centralwidget)
         self.asist_btn.setGeometry(QtCore.QRect(940, 890, 91, 81))
@@ -99,8 +107,8 @@ class Ui_Desk_Window(object):
 
         # Lista de aplicaciones
         self.applications = [
-            {"name": "Notepad", "command": ["python" , "./apps/calculator.py"], "icon": "./graphic_resources/icons/calculator.png"},
-            {"name": "Paint", "command": ["python" , "./apps/photos.py"] , "icon": "./graphic_resources/icons/photos.png"},
+            {"name": "Calculator", "command": ["python" , "./apps/calculator.py"], "icon": "./graphic_resources/icons/calculator.png"},
+            {"name": "Photos", "command": ["python" , "./apps/photos.py"] , "icon": "./graphic_resources/icons/photos.png"},
             {"name" : "Music", "command": ["python" , "./apps/music.py"], "icon": "./graphic_resources/icons/music.png"},
             {"name": "Task Manager", "command": ["python" , "./apps/task.py"], "icon": "./graphic_resources/icons/task.png"}, 
             # {"name": "", "command": [""]},
@@ -136,7 +144,7 @@ class Ui_Desk_Window(object):
             toggle_frames(self.apps_bar, self.apps_window)
         else:
             toggle_frames(self.apps_window, self.apps_bar)
-            
+
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)

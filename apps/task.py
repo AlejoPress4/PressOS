@@ -56,11 +56,11 @@ class AdvancedTaskManager(QMainWindow):
     @pyqtSlot()
     def update_process_list(self):
         self.processes_table.setRowCount(0)
-        project_path = os.path.dirname(os.path.abspath(__file__))
+        apps_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'apps')
 
         for process in psutil.process_iter(['pid', 'name', 'cpu_percent', 'memory_percent', 'num_threads', 'exe']):
             try:
-                if process.info['exe'] and project_path in process.info['exe']:
+                if process.info['exe'] and apps_path in process.info['exe']:
                     row_position = self.processes_table.rowCount()
                     self.processes_table.insertRow(row_position)
                     self.processes_table.setItem(row_position, 0, QTableWidgetItem(str(process.info['pid'])))

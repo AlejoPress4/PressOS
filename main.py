@@ -13,8 +13,8 @@ class Main(QMainWindow):
     def initUI(self):
         self.setWindowTitle('Sistema Operativo Simulado')
         self.showFullScreen() 
-        #self.show_login()
-        self.show_desktop()
+        self.show_login()
+        #self.show_desktop()
 
     def show_login(self):
         self.login_screen = Ui_Login_Window()
