@@ -97,10 +97,6 @@ class Ui_Login_Window(object):
         self.user_now.setText(_translate("Login_Window", users['def_usr']))
 
 
-    def close(self):
-        self.centralwidget.close()
-
-
     def login(self):
         password = self.pass_input.toPlainText()        
         if press_os().login(password):

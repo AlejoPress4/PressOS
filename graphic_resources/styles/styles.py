@@ -1,4 +1,4 @@
-from PyQt5.QtGui import QPalette, QColor, QPixmap 
+from PyQt5.QtGui import QPalette, QColor, QPixmap
 from PyQt5.QtCore import Qt
 from PyQt5 import QtWidgets
 
@@ -47,54 +47,24 @@ QWidget#centralwidget {
     background-position: center;
     background-size: cover;
 }
-QFrame#apps_bar {
-border: 2px solid #FF5733;  # Cambia el color del borde aquí
+
+
+QPushButton#btn_apps {
+    qproperty-icon: url('./graphic_resources/icons/btn_apps.png');
+    background: transparent;
+    qproperty-iconSize: 61px 51px;
 }
 
-QLabel#icon_Calculator {
-    background-image: url('./graphic_resources/icons/calculator.png');
-    background-repeat: no-repeat;
-    background-position: center;
+QPushButton#shutdown {
+    qproperty-icon: url('./graphic_resources/icons/shutdown.png');
+    qproperty-iconSize: 61px 51px;
+    background: transparent;
 }
-
-QLabel#icon_Notepad {
-    background-image: url('./graphic_resources/icons/notepad.png');
-    background-repeat: no-repeat;
-    background-position: center;
+QPushButton#reboot {
+    qproperty-icon: url('./graphic_resources/icons/reboot.png');
+    qproperty-iconSize: 64px 64px;
+    background: transparent;
 }
-
-QLabel#icon_Camera{
-    background-image: url('./graphic_resources/icons/notepad.png);
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-QLabel#icon_Photos{
-    background-image: url('./graphic_resources/icons/notepad.png');
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-QLabel#icon_Paint {
-    background-image:url('./graphic_resources/icons/paint.png');
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-QLabel#icon_Music {
-    background-image: url('./graphic_resources/icons/music.png');
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-QPushButton#btn_app{
-    background-image: url('./graphic_resources/icons/btnapps.png')
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-
-
 """
 def set_photo(photo_box, image_path):
     photo_label = QtWidgets.QLabel(photo_box)
