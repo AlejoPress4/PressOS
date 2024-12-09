@@ -1,7 +1,6 @@
 import re
 from PyQt5 import QtCore, QtGui, QtWidgets
 from kernel.modules.config.functions import press_os
-from kernel.secrets import users
 from graphic_resources.styles.styles import *
 from PyQt5.QtCore import pyqtSignal
 from kernel.modules.config.functions_ui import *
@@ -58,7 +57,6 @@ class Ui_Login_Window(object):
         font = QtGui.QFont()
         font.setPointSize(20)
         self.user_now.setFont(font)
-        self.user_now.setObjectName("user_now")
 
         # Botones de apagado y reinicio
         self.shutdown = QtWidgets.QPushButton(self.centralwidget)
@@ -88,20 +86,53 @@ class Ui_Login_Window(object):
         self.retranslateUi(Main_Window)
         QtCore.QMetaObject.connectSlotsByName(Main_Window)
 
+    # def retranslateUi(self, Main_Window):
+    #     _translate = QtCore.QCoreApplication.translate
+    #     Main_Window.setWindowTitle(_translate("Login_Window", "Press OS"))
+    #     self.change_btn.setText(_translate("Login_Window", "Change User"))
+    #     self.pushButton.setText(_translate("Login_Window", "Press"))
+    #     self.pass_lb.setText(_translate("Login_Window", "Password:"))
+    #     self.user_now.setText(_translate("Login_Window", users['def_usr']))
+    
     def retranslateUi(self, Main_Window):
         _translate = QtCore.QCoreApplication.translate
-        Main_Window.setWindowTitle(_translate("Login_Window", "Press OS"))
-        self.change_btn.setText(_translate("Login_Window", "Change User"))
-        self.pushButton.setText(_translate("Login_Window", "Press"))
-        self.pass_lb.setText(_translate("Login_Window", "Password:"))
-        self.user_now.setText(_translate("Login_Window", users['def_usr']))
+        Main_Window.setWindowTitle(_translate("Main_Window", "Main_Window"))
+    def update_current_user_label(self):
+        current_user = self.press_os_instance.get_current_user()
+        self.user_now.setText(f"Current User: {current_user.username}")
 
-
-    def login(self):
-        password = self.pass_input.toPlainText()        
-        if press_os().login(password):
-            # send to desktop
+    def handle_login(self):
+        username = self.username_input.text()
+        password = self.password_input.text()
+        if self.press_os_instance.login(username, password):
+            self.update_current_user_label()
             return True
         else:
-            self.pass_input.setText('')
-            return False     
+            self.password_input.setText('')
+            return False
+
+    def change_user(self):
+        self.user_combo.clear()
+        usuarios = self.press_os_instance.obtener_usuarios()
+        for usuario in usuarios:
+            self.user_combo.addItem(usuario.username)
+        self.user_combo.show()
+        self.user_combo.activated[str].connect(self.user_selected)
+
+    def user_selected(self, username):
+        self.user_now.setText(f"Current User: {username}")
+        self.user_combo.hide()
+        self.press_os_instance.current_user = next(user for user in self.press_os_instance.obtener_usuarios() if user.username == username)
+
+
+    # def login(self):
+    #     password = self.pass_input.toPlainText()
+    #     if press_os().login(password):
+    #         # send to desktop
+    #         return True
+    #     else:
+    #         self.pass_input.setText('')
+    #         return False
+    
+    # def close(self):
+    #     self.close() 

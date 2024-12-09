@@ -3,7 +3,7 @@ import subprocess, cv2
 from kernel.modules.config.functions_ui import toggle_frames, add_labels_to_layout, ClickableLabel
 from graphic_resources.styles.styles import *
 from kernel.modules.config.functions_ui import *
-from kernel.secrets import def_usr
+from kernel.modules.config.functions import *
 from apps import *
 
 class Ui_Desk_Window(object):

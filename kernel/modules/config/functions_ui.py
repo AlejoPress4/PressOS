@@ -1,7 +1,8 @@
 from PyQt5.QtCore import QPropertyAnimation, QRect, pyqtSignal, QTimer, QEasingCurve
-from PyQt5.QtWidgets import QLabel, QGraphicsOpacityEffect
+from PyQt5.QtWidgets import QLabel, QGraphicsOpacityEffect, QVBoxLayout, QHBoxLayout
 from PyQt5.QtGui import QPixmap, QColor
 from PyQt5 import QtCore
+from kernel.modules.users import usuarios
 import math, time
 def toggle_frames(frame1, frame2):
     frame1.hide()
@@ -94,6 +95,42 @@ def actualizar_color_borde(frame):
             border: 2px solid rgb({red}, {green}, {blue});
         }}
     """)
+
+def agregar_usuarios_a_frame(frame, on_user_selected):
+    # Limpiar el frame antes de agregar nuevos widgets
+    for i in reversed(range(frame.layout().count())): 
+        widget_to_remove = frame.layout().itemAt(i).widget()
+        frame.layout().removeWidget(widget_to_remove)
+        widget_to_remove.setParent(None)
+
+    # Crear un layout vertical para el frame
+    layout = QVBoxLayout(frame)
+    frame.setLayout(layout)
+
+    # Agregar cada usuario al layout
+    for usuario in usuarios:
+        # Crear un layout horizontal para cada usuario
+        user_layout = QHBoxLayout()
+
+        # Crear una QLabel para la foto de perfil
+        foto_label = ClickableLabel()
+        foto_label.username = usuario.username
+        foto_label.clicked.connect(on_user_selected)
+        pixmap = QPixmap(usuario.photo)
+        foto_label.setPixmap(pixmap.scaled(50, 50, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation))
+
+        # Crear una QLabel para el nombre de usuario
+        nombre_label = QLabel(usuario.username)
+
+        # Agregar las QLabel al layout horizontal
+        user_layout.addWidget(foto_label)
+        user_layout.addWidget(nombre_label)
+
+        # Agregar el layout horizontal al layout vertical
+        layout.addLayout(user_layout)
+
+    # Ajustar el layout del frame
+    frame.setLayout(layout)
         
 class ClickableLabel(QLabel):
 	clicked = pyqtSignal()
