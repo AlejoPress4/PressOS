@@ -4,16 +4,15 @@ from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
 import os
 from groq import Groq
-from styles import apply_styles, assistantST
 
 class AsistenteGUI(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Asistente IA")
         self.setMinimumSize(400, 500)
-        
         # Configurar el cliente Groq
-        self.client = Groq(api_key=os.environ.get("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"))
+        api_key = "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"  # Reemplaza esto con tu clave API real
+        self.client = Groq(api_key=api_key)
         
         # Configurar el widget central y el layout principal
         central_widget = QWidget(self)
@@ -32,6 +31,7 @@ class AsistenteGUI(QMainWindow):
         # Campo de entrada
         self.input_field = QLineEdit()
         self.input_field.setPlaceholderText("Escribe tu mensaje aquí...")
+        self.input_field.returnPressed.connect(self.send_message)
         input_layout.addWidget(self.input_field)
         
         # Botón de enviar
@@ -43,10 +43,36 @@ class AsistenteGUI(QMainWindow):
         main_layout.addLayout(input_layout)
         
         # Aplicar estilos
-        apply_styles(AsistenteGUI, assistantST)
-        
-        # Configurar fuentes
+        self.apply_styles()
+
+    def apply_styles(self):
+        # Estilos generales
+        self.setStyleSheet("""
+            QMainWindow {
+                background-color: #f0f0f0;
+            }
+            QTextEdit, QLineEdit {
+                background-color: white;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                padding: 5px;
+                font-size: 14px;
+            }
+            QPushButton {
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+            QPushButton:hover {
+                background-color: #45a049;
+            }
+        """)
         self.set_fonts()
+        self.raise_()
+        self.activateWindow()
 
     def set_fonts(self):
         font = QFont("Arial", 10)

@@ -155,7 +155,7 @@ class AdvancedTaskManager(QMainWindow):
 
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_process_list)
-        self.timer.start(2000)  # Update every 5 seconds
+        self.timer.start(800)  # Update every 5 seconds
 
     def create_nav_buttons(self, layout):
         buttons = ['Resumen', 'Procesos', 'Rendimiento', 'Aplicaciones', 'Usuarios']

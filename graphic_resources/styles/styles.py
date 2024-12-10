@@ -101,68 +101,7 @@ Qlabel#user_lb {
 
 
 """
-# Nuevo estilo para el asistente
-assistantST = """
-QWidget#centralwidget {
-    background-color: #f0f0f0;
-}
 
-QTextEdit, QLineEdit {
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 5px;
-    font-size: 14px;
-}
-
-QPushButton#send_button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 16px;
-    font-size: 14px;
-}
-
-QPushButton#send_button:hover {
-    background-color: #45a049;
-}
-"""
-
-# New style for the browser
-browserST = """
-QMainWindow {
-    background-color: #f0f0f0;
-}
-
-QLineEdit {
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 20px;
-    padding: 5px 10px;
-    font-size: 14px;
-    margin: 5px;
-}
-
-QPushButton {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 15px;
-    padding: 5px 10px;
-    font-size: 16px;
-    margin: 5px;
-}
-
-QPushButton:hover {
-    background-color: #45a049;
-}
-
-QWebEngineView {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-"""
 def set_photo(photo_box, image_path):
     # Eliminar todos los widgets hijos de photo_box
     for child in photo_box.children():

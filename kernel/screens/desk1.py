@@ -83,7 +83,7 @@ class Ui_Desk_Window(object):
         self.asist_btn = QtWidgets.QPushButton(self.centralwidget)
         self.asist_btn.setGeometry(QtCore.QRect(940, 890, 91, 81))
         self.asist_btn.setObjectName("asist_btn")
-        self.asist_btn.clicked.connect(lambda: self.open_application(["python", "./apps/assistant.py"]))
+        self.asist_btn.clicked.connect(open_assistant())
 
 
         self.time_desk = QtWidgets.QFrame(self.centralwidget)

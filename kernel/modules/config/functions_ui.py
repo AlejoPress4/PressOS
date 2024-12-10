@@ -154,3 +154,7 @@ def reboot(window: QWidget):
     window.close()
     python = sys.executable
     os.execl(python, python, *sys.argv)
+    
+def open_assistant():
+    import subprocess
+    subprocess.Popen(["python", "./apps/assistant.py"])
