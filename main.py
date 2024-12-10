@@ -1,3 +1,4 @@
+from email.policy import default
 import os, sys, PyQt5
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from kernel.screens.desk1 import Ui_Desk_Window
@@ -6,8 +7,10 @@ from kernel.modules.config.functions import press_os
 from PyQt5.QtCore import *
 
 class Main(QMainWindow):
+    default_user = None
     def __init__(self):
         super().__init__()
+    
         self.initUI()
         
     def initUI(self):

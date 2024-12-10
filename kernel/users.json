@@ -1,0 +1,21 @@
+[
+    {
+        "username": "Press",
+        "password": "0424",
+        "permisos": ["admin", "read", "write"],
+        "photo": "./graphic_resources/photoProfile/photo_profile.jpg"
+        
+    },
+    {
+        "username": "TonTon",
+        "password": "Molton321#",
+        "permisos": ["read", "admin"],
+        "photo": "./graphic_resources/photoProfile/tonton.jpg"
+    },
+    {
+        "username": "Mari",
+        "password": "alejo4",
+        "permisos": ["read", "write"],
+        "photo": "./graphic_resources/photoProfile/mari.jpg"
+    }
+]
