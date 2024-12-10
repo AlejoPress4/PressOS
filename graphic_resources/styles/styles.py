@@ -65,24 +65,37 @@ QPushButton#reboot {
 }
 
 QFrame#time_desk {
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.3);  
+    border-radius: 15px;  
+    padding: 10px;  
 }
 
 QFrame#time_desk QLabel {
     color: white;
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Arial, sans-serif;  
     qproperty-alignment: AlignCenter;
 }
 
-QFrame#time_desk QLabel:first-child {
-    font-size: 36px;
+QFrame#time_desk QLabel:first-child {  
+    font-size: 48px;  
     font-weight: bold;
+    margin-bottom: 5px; 
 }
 
-QFrame#time_desk QLabel:last-child {
-    font-size: 18px;
+QFrame#time_desk QLabel:last-child {  
+    font-size: 24px; 
 }
+
+QPushButton#asist_btn {
+    qproperty-icon: url('./graphic_resources/icons/assist.png');
+    background: transparent;
+    qproperty-iconSize: 91px 81px;
+}
+
+QFrame#apps_window {
+    border-radius: 15px;
+}
+
 """
 # Nuevo estilo para el asistente
 assistantST = """
