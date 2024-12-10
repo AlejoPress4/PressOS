@@ -111,6 +111,7 @@ class Ui_Desk_Window(object):
             {"name": "Photos", "command": ["python" , "./apps/photos.py"] , "icon": "./graphic_resources/icons/photos.png"},
             {"name" : "Music", "command": ["python" , "./apps/music.py"], "icon": "./graphic_resources/icons/music.png"},
             {"name": "Task Manager", "command": ["python" , "./apps/task.py"], "icon": "./graphic_resources/icons/task.png"}, 
+            # {"name": }
             # {"name": "", "command": [""]},
         ]
 

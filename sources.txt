@@ -1,0 +1,10 @@
+# PyQt5 for GUI components
+PyQt5==5.15.4
+
+# psutil for system monitoring (used in task manager)
+psutil==5.8.0
+
+# Pillow for image processing (used in photo viewer)
+Pillow==8.2.0
+
+# Additional libraries (if any)
