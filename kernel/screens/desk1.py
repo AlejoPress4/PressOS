@@ -12,6 +12,7 @@ class Ui_Desk_Window(object):
         
     def setupUi(self, Desk_Window):
         Desk_Window.setObjectName("Desk_Window")
+        # Desk_Window.resize(1920, 1080)
         self.centralwidget = QtWidgets.QWidget(Desk_Window)
         self.centralwidget.setObjectName("centralwidget")
         apply_styles(Desk_Window, deskST)
@@ -29,8 +30,8 @@ class Ui_Desk_Window(object):
         # Usar un QVBoxLayout para apps_bar
         self.apps_bar_layout = QtWidgets.QVBoxLayout(self.apps_bar)
         self.apps_bar_layout.setGeometry(QtCore.QRect(0, 0, 120, 811))
-        self.apps_bar_layout.setContentsMargins(15, 0, 0, 90)  # Dejar espacio en la parte inferior
-        self.apps_bar.setLayout(self.apps_bar_layout)
+        self.apps_bar_layout.setContentsMargins(0, 0, 0, 90)  # Dejar espacio en la parte inferior
+        # self.apps_bar.setLayout(self.apps_bar_layout)
         
         self.apps_window = QtWidgets.QFrame(self.centralwidget)
         self.apps_window.setGeometry(QtCore.QRect(160, 70, 1571, 781))
@@ -43,15 +44,16 @@ class Ui_Desk_Window(object):
         self.timer_window = QTimer(self.apps_window)
         self.timer_window.timeout.connect(lambda: actualizar_color_borde(self.apps_window))
         self.timer_window.start(20)  # Actualiza cada 20ms
-           
-        self.btn_apps = QtWidgets.QPushButton(self.apps_bar)
-        self.btn_apps.setGeometry(QtCore.QRect(20, 720, 90, 90))
-        
-        self.btn_apps.setObjectName("btn_apps")
         
         # Usar un QGridLayout para apps_window
         self.apps_window_layout = QtWidgets.QGridLayout(self.apps_window)
-        self.apps_window.setLayout(self.apps_window_layout)
+        self.apps_window_layout.setContentsMargins(5, 15, 5, 90)  # Dejar espacio en la parte inferior
+        
+           
+        self.btn_apps = QtWidgets.QPushButton(self.apps_bar)
+        self.btn_apps.setGeometry(QtCore.QRect(20, 720, 90, 90))
+        self.btn_apps.setObjectName("btn_apps")
+    
         
         self.options_apps = QtWidgets.QFrame(self.apps_window)
         self.options_apps.setGeometry(QtCore.QRect(0, 709, 1571, 71))
@@ -61,7 +63,6 @@ class Ui_Desk_Window(object):
         
         self.shutdown = QtWidgets.QPushButton(self.options_apps)
         self.shutdown.setGeometry(QtCore.QRect(1470, 10, 61, 51))
-        self.shutdown.setText("")
         self.shutdown.setObjectName("shutdown")
         self.shutdown.clicked.connect(lambda: shutdown(self.desktop_screen, self))
         
@@ -75,26 +76,24 @@ class Ui_Desk_Window(object):
         
         self.reboot = QtWidgets.QPushButton(self.options_apps)
         self.reboot.setGeometry(QtCore.QRect(1380, 10, 61, 51))
-        self.reboot.setText("")
         self.reboot.setObjectName("reboot")
         self.reboot.clicked.connect(lambda: reboot(self.desktop_screen, self))
         
         self.asist_btn = QtWidgets.QPushButton(self.centralwidget)
         self.asist_btn.setGeometry(QtCore.QRect(940, 890, 91, 81))
-        self.asist_btn.setText("")
         self.asist_btn.setObjectName("asist_btn")
         self.asist_btn.clicked.connect(lambda: self.open_application(["python", "./apps/assistant.py"]))
         
         
-        # Crear el layout asist_window como QVBoxLayout
-        self.asist_window_layout = QtWidgets.QVBoxLayout()
+        # # Crear el layout asist_window como QVBoxLayout
+        # self.asist_window_layout = QtWidgets.QVBoxLayout()
         
-        # Crear un widget contenedor para el layout
-        self.asist_window = QtWidgets.QWidget(self.centralwidget)
-        self.asist_window.setGeometry(QtCore.QRect(160, 70, 800, 800))
-        self.asist_window.setLayout(self.asist_window_layout)
-        self.asist_window.setObjectName("asist_window")
-        self.asist_window.hide()  # Ocultar inicialmente
+        # # Crear un widget contenedor para el layout
+        # self.asist_window = QtWidgets.QWidget(self.centralwidget)
+        # self.asist_window.setGeometry(QtCore.QRect(160, 70, 800, 800))
+        # self.asist_window.setLayout(self.asist_window_layout)
+        # self.asist_window.setObjectName("asist_window")
+        # self.asist_window.hide()  # Ocultar inicialmente
         
         self.time_desk = QtWidgets.QFrame(self.centralwidget)
         self.time_desk.setGeometry(QtCore.QRect(1530, 850, 361, 121))

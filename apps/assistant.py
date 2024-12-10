@@ -43,7 +43,7 @@ class AsistenteGUI(QMainWindow):
         main_layout.addLayout(input_layout)
         
         # Aplicar estilos
-        apply_styles(self, assistantST)
+        apply_styles(AsistenteGUI, assistantST)
         
         # Configurar fuentes
         self.set_fonts()

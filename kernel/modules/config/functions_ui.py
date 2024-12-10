@@ -96,7 +96,7 @@ def actualizar_color_borde(frame):
 
     # Aplicar el estilo al frame
     frame.setStyleSheet(f"""
-        QFrame#apps_bar {{
+        QFrame {{
             border: 2px solid rgb({red}, {green}, {blue});
         }}
     """)

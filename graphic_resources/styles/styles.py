@@ -49,7 +49,7 @@ QWidget#centralwidget {
 
 QPushButton#btn_apps {
     qproperty-icon: url('./graphic_resources/icons/btn_apps.png');
-    background: transparent;
+    background: red;
     qproperty-iconSize: 61px 51px;
 }
 
@@ -67,7 +67,7 @@ QPushButton#reboot {
 QFrame#time_desk {
     background-color: rgba(0, 0, 0, 0.3);  
     border-radius: 15px;  
-    padding: 10px;  
+    padding: 5px;  
 }
 
 QFrame#time_desk QLabel {
@@ -92,9 +92,6 @@ QPushButton#asist_btn {
     qproperty-iconSize: 91px 81px;
 }
 
-QFrame#apps_window {
-    border-radius: 15px;
-}
 
 """
 # Nuevo estilo para el asistente
