@@ -11,7 +11,6 @@ class Main(QMainWindow):
     
     def __init__(self):
         super().__init__()
-        
         self.initUI()
         
     def initUI(self):
@@ -23,19 +22,8 @@ class Main(QMainWindow):
     def show_login(self):
         self.login_screen = Ui_Login_Window(self.config)
         self.login_screen.setupUi(self)
-        #self.login_screen.pushButton.clicked.connect(self.handle_login) 
         self.login_screen.pushButton.clicked.connect(lambda: self.show_desktop() if self.login_screen.login() else print("Nope"))
         self.show()
-        
-    # def handle_login(self):
-    #     username = self.login_screen.username_input.text()
-    #     password = self.login_screen.password_input.text()
-    #     if self.login_screen.press_os_instance.login(username, password):
-    #         self.show_desktop(self.login_screen.press_os_instance.get_current_user())
-    #     else:
-    #         self.login_screen.password_input.setText('')
-    #         return False
-
         
     def show_desktop(self):
         self.login_screen.close()

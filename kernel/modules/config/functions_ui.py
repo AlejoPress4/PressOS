@@ -1,9 +1,13 @@
 from PyQt5.QtCore import QPropertyAnimation, QRect, pyqtSignal, QTime, QDate, QTimer, QEasingCurve
-from PyQt5.QtWidgets import QLabel, QGraphicsOpacityEffect, QVBoxLayout, QHBoxLayout
+from PyQt5.QtWidgets import QLabel, QGraphicsOpacityEffect, QVBoxLayout, QHBoxLayout, QWidget
 from PyQt5.QtGui import QPixmap, QColor
 from PyQt5 import QtCore
 from kernel.modules.config.functions import press_os
 import math, time
+import sys
+import os
+from PyQt5.QtWidgets import QApplication
+
 def toggle_frames(frame1, frame2):
     frame1.hide()
     frame2.show()
@@ -79,14 +83,6 @@ def add_labels_to_layout(applications, layout, parent, open_application, is_grid
 		else:
 			layout.addWidget(label)
 
-def shutdown(self):
-    self.login_screen.close()
-    self.desktop_screen.close()
-
-def reboot(self):
-    self.login_screen.refresh()
-    self.desktop_screen.refresh()
-    
     
 start_time = time.time()
 def actualizar_color_borde(frame):
@@ -150,3 +146,11 @@ class ClickableLabel(QLabel):
 	def mousePressEvent(self, event):
 		self.clicked.emit()
 		super().mousePressEvent(event)
+
+def shutdown():
+    QApplication.quit()
+
+def reboot(window: QWidget):
+    window.close()
+    python = sys.executable
+    os.execl(python, python, *sys.argv)

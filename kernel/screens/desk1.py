@@ -12,7 +12,6 @@ class Ui_Desk_Window(object):
         
     def setupUi(self, Desk_Window):
         Desk_Window.setObjectName("Desk_Window")
-        # Desk_Window.resize(1920, 1080)
         self.centralwidget = QtWidgets.QWidget(Desk_Window)
         self.centralwidget.setObjectName("centralwidget")
         apply_styles(Desk_Window, deskST)
@@ -21,6 +20,7 @@ class Ui_Desk_Window(object):
         self.apps_bar.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.apps_bar.setFrameShadow(QtWidgets.QFrame.Raised)
         self.apps_bar.setObjectName("apps_bar")
+        
         #RGBBB pa
         self.timer = QTimer(self.apps_bar)
         self.timer.timeout.connect(lambda: actualizar_color_borde(self.apps_bar))
@@ -46,7 +46,7 @@ class Ui_Desk_Window(object):
            
         self.btn_apps = QtWidgets.QPushButton(self.apps_bar)
         self.btn_apps.setGeometry(QtCore.QRect(20, 720, 90, 90))
-        self.btn_apps.setText("")
+        
         self.btn_apps.setObjectName("btn_apps")
         
         # Usar un QGridLayout para apps_window
