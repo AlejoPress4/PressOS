@@ -3,7 +3,8 @@ from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QVBoxLayou
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
 from kernel.modules.config.functions import press_os
-from kernel.modules import Usuario, users
+from kernel.modules import Usuario
+from kernel.modules.config import users
 
 class UserCreationWindow(QWidget):
     def __init__(self):

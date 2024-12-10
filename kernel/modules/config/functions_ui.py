@@ -2,7 +2,7 @@ from PyQt5.QtCore import QPropertyAnimation, QRect, pyqtSignal, QTimer, QEasingC
 from PyQt5.QtWidgets import QLabel, QGraphicsOpacityEffect, QVBoxLayout, QHBoxLayout
 from PyQt5.QtGui import QPixmap, QColor
 from PyQt5 import QtCore
-from kernel.modules.users import usuarios
+from kernel.modules.config.users import usuarios
 import math, time
 def toggle_frames(frame1, frame2):
     frame1.hide()

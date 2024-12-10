@@ -1,67 +1,52 @@
 import subprocess
 import os, sys, cv2
+import json
 from PyQt5 import QtCore
-from kernel.modules.users import usuarios, Usuario
+from users import Usuario
 
 class press_os:
-    def __init__(self):
-        self.default_user = Usuario("Press", "0424", ["admin", "read", "write"])
-        self.current_user = self.default_user
-        self.usuarios = usuarios
+    usuarios = {}
+    current_user = None
+    current_user_directory = None
 
-    def read_users(self, path):
-        with open(path, 'r') as file:
-            users = file.readlines()
-        print(users)
+    def __init__(self):
+        self.usuarios = self.load_json('kernel/users.json')
+        self.current_user = self.usuarios.get('Press')
 
     def login(self, username, password):
-        usuario = self.autenticar(username, password)
+        usuario = self.usuarios.get(username)
         if usuario:
-            self.current_user = usuario
-            return True
+            if usuario.password == password:
+                self.current_user = usuario
+                self.current_user_directory = usuario.user_path
+                return True
+            else:
+                return False
         else:
             return False
 
+    def load_json(self, filepath):
+        with open(filepath, 'r', encoding='utf-8') as file:
+            data = json.load(file)
+            self.usuarios = {user['username']: Usuario(**user) for user in data}
+        return self.usuarios
+
+    def save_json(self, filepath):
+        with open(filepath, 'w', encoding='utf-8') as file:
+            json.dump([user.__dict__ for user in self.usuarios.values()], file, ensure_ascii=False, indent=4)
+
+    # Getters
     def get_current_user(self):
         return self.current_user
-    
-    def get_current_user_directory(self):
+
+    def get_user_directory(self):
         return self.current_user_directory
 
-    def set_default_user(self):
-        self.current_user = self.default_user
-
-# Función para autenticar usuarios
-    def autenticar(self, username, password):
-        for usuario in self.usuarios:
-            if usuario.username == username and usuario.password == password:
-                return usuario
-        return None
-
-    # Función para agregar un nuevo usuario
-    def agregar_usuario(self, username, password, permisos, photo=None):
-        if not any(usuario.username == username for usuario in self.usuarios):
-            self.usuarios.append(Usuario(username, password, permisos, photo))
-            return True
-        return False
-
-    # Función para eliminar un usuario
-    def eliminar_usuario(self, username):
-        self.usuarios = [usuario for usuario in self.usuarios if usuario.username != username]
-
-    # Función para verificar permisos
-    def tiene_permiso(self, usuario, permiso):
-        return permiso in usuario.permisos
-
-    # Función para obtener todos los usuarios
-    def obtener_usuarios(self):
+    def get_users(self):
         return self.usuarios
-    
-    # def crear_directorios_usuarios(self):
-    #     for usuario in self.usuarios:
-    #         os.mkdir(f"./users/{usuario.username}")
-    
-    def crear_directorios_usuarios():
-        base_path = './user_files'
-        if not os.path.exists(base_path):
-            os.makedirs(base_path)
+
+
+# Ejemplo de uso
+config = press_os()
+print(config.get_current_user())
+

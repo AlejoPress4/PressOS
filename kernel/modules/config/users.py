@@ -1,20 +1,26 @@
 import json
 import os
 
-class Usuario:
-    usuarios = {}  # Diccionario de clase para almacenar los usuarios
+class Usuario:  # Diccionario de clase para almacenar los usuarios
 
-    def __init__(self, username, password, permisos, photo=None):
+    def __init__(self, username, password, permisos, photo=None, user_path=None):
         self.username = username
         self.password = password
         self.permisos = permisos
         self.photo = photo
         self.user_path = self.create_user_path()
+        
 
     def create_user_path(self):
-        base_path = './users_files'
+        base_path = 'users_files'
         user_path = os.path.join(base_path, self.username)
         os.makedirs(user_path, exist_ok=True)
+
+        # Crear carpetas por defecto
+        default_folders = ['Documentos', 'Descargas', 'Musica', 'Imagenes', 'Videos']
+        for folder in default_folders:
+            os.makedirs(os.path.join(user_path, folder), exist_ok=True)
+
         return user_path
 
     # Setters
@@ -47,20 +53,14 @@ class Usuario:
         return self.user_path
 
     # Metodos
-    # verificar si un usuario tiene el permiso necesario
-    def check_permiso(self, permiso="adimin"):
-        return permiso in self.permisos
 
     def __str__(self):
         return f"Usuario(username={self.username}, permisos={self.permisos}, foto={self.photo}, path={self.user_path})"
 
-    @classmethod
-    def from_json(cls, filepath):
-        with open(filepath, 'r', encoding='utf-8') as file:
-            data = json.load(file)
-            cls.usuarios = {user['username']: cls(**user) for user in data}
-            return cls.usuarios
 
-# Ejemplo de uso
-usuarios = Usuario.from_json('kernel/users.json')
-print(usuarios['Press'].get_user_path())
+# # Ejemplo de uso
+# usuarios = Usuario.from_json('kernel/users.json')
+# print(usuarios['Press'].get_user_path())
+
+# # Crear un nuevo usuario
+# nuevo_usuario = Usuario('francisco', '1234', ['admin', 'user'], 'photo.jpg')

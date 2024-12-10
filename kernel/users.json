@@ -2,20 +2,42 @@
     {
         "username": "Press",
         "password": "0424",
-        "permisos": ["admin", "read", "write"],
-        "photo": "./graphic_resources/photoProfile/photo_profile.jpg"
-        
+        "permisos": [
+            "admin",
+            "read",
+            "write"
+        ],
+        "photo": "./graphic_resources/photoProfile/photo_profile.jpg",
+        "user_path": "users_files\\Press"
     },
     {
         "username": "TonTon",
         "password": "Molton321#",
-        "permisos": ["read", "admin"],
-        "photo": "./graphic_resources/photoProfile/tonton.jpg"
+        "permisos": [
+            "read",
+            "admin"
+        ],
+        "photo": "./graphic_resources/photoProfile/tonton.jpg",
+        "user_path": "users_files\\TonTon"
     },
     {
         "username": "Mari",
         "password": "alejo4",
-        "permisos": ["read", "write"],
-        "photo": "./graphic_resources/photoProfile/mari.jpg"
+        "permisos": [
+            "read",
+            "write"
+        ],
+        "photo": "./graphic_resources/photoProfile/mari.jpg",
+        "user_path": "users_files\\Mari"
+    },
+    {
+        "username": "francisco",
+        "password": "1234",
+        "permisos": [
+            "admin",
+            "user"
+        ],
+        "photo": "photo.jpg",
+        "user_path": "users_files\\francisco"
     }
 ]
