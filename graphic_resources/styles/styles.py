@@ -33,7 +33,11 @@ QGroupBox#group_box, QFrame#photo_box {
     border-radius: 10px;
 }
 
-QLabel#user_now, QLabel#pass_lb {
+QLabel#user_now {
+    color: white;
+}
+
+QLabel#pass_lb {
     color: white;
 }
 
@@ -90,6 +94,9 @@ QPushButton#asist_btn {
     qproperty-icon: url('./graphic_resources/icons/assist.png');
     background: transparent;
     qproperty-iconSize: 91px 81px;
+}
+Qlabel#user_lb {
+    color: white;
 }
 
 
@@ -157,8 +164,13 @@ QWebEngineView {
 }
 """
 def set_photo(photo_box, image_path):
+    # Eliminar todos los widgets hijos de photo_box
+    for child in photo_box.children():
+        if isinstance(child, QtWidgets.QWidget):
+            child.deleteLater()
+    # Crear y configurar el QLabel para la nueva imagen
     photo_label = QtWidgets.QLabel(photo_box)
     photo_label.setGeometry(photo_box.rect())
     photo_label.setPixmap(QPixmap(image_path).scaled(photo_label.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
     photo_label.setAlignment(Qt.AlignCenter)
-    return photo_label
+    photo_label.show()

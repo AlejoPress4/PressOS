@@ -64,37 +64,28 @@ class Ui_Desk_Window(object):
         self.shutdown = QtWidgets.QPushButton(self.options_apps)
         self.shutdown.setGeometry(QtCore.QRect(1470, 10, 61, 51))
         self.shutdown.setObjectName("shutdown")
-        self.shutdown.clicked.connect(lambda: shutdown(self.desktop_screen, self))
+        self.shutdown.clicked.connect(lambda: shutdown())
         
         self.user_lb = QtWidgets.QLabel(self.options_apps)
         self.user_lb.setGeometry(QtCore.QRect(40, 10, 501, 51))
         font = QtGui.QFont()
         font.setPointSize(20)
         self.user_lb.setFont(font)
-        self.user_lb.setText(f"User: {self.config.current_user.username}")
+        self.user_lb.setText(f"{self.config.current_user.username}")
+        self.user_lb.setStyleSheet("color: white;")
         self.user_lb.setObjectName("user_lb")
         
         self.reboot = QtWidgets.QPushButton(self.options_apps)
         self.reboot.setGeometry(QtCore.QRect(1380, 10, 61, 51))
         self.reboot.setObjectName("reboot")
-        self.reboot.clicked.connect(lambda: reboot(self.desktop_screen, self))
+        self.reboot.clicked.connect(lambda: reboot(Desk_Window))
         
         self.asist_btn = QtWidgets.QPushButton(self.centralwidget)
         self.asist_btn.setGeometry(QtCore.QRect(940, 890, 91, 81))
         self.asist_btn.setObjectName("asist_btn")
         self.asist_btn.clicked.connect(lambda: self.open_application(["python", "./apps/assistant.py"]))
-        
-        
-        # # Crear el layout asist_window como QVBoxLayout
-        # self.asist_window_layout = QtWidgets.QVBoxLayout()
-        
-        # # Crear un widget contenedor para el layout
-        # self.asist_window = QtWidgets.QWidget(self.centralwidget)
-        # self.asist_window.setGeometry(QtCore.QRect(160, 70, 800, 800))
-        # self.asist_window.setLayout(self.asist_window_layout)
-        # self.asist_window.setObjectName("asist_window")
-        # self.asist_window.hide()  # Ocultar inicialmente
-        
+
+
         self.time_desk = QtWidgets.QFrame(self.centralwidget)
         self.time_desk.setGeometry(QtCore.QRect(1530, 850, 361, 121))
         self.time_desk.setAutoFillBackground(False)
@@ -161,6 +152,8 @@ class Ui_Desk_Window(object):
         subprocess.Popen(command)
 
     def toggle_apps_window(self):
+        print("Toggle apps window")
+        print(self.apps_bar.isVisible())
         if self.apps_bar.isVisible():
             toggle_frames(self.apps_bar, self.apps_window)
         else:

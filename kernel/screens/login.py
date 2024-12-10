@@ -26,6 +26,7 @@ class Ui_Login_Window(object):
         self.change_btn = QtWidgets.QPushButton(self.group_box)
         self.change_btn.setGeometry(QtCore.QRect(230, 510, 111, 31))
         self.change_btn.setObjectName("change_btn")
+        self.change_btn.clicked.connect(self.change_user)
 
         # Botón de envío
         self.pushButton = QtWidgets.QPushButton(self.group_box)
@@ -62,20 +63,19 @@ class Ui_Login_Window(object):
         # Usuario actual
         self.user_now = QtWidgets.QLabel(self.group_box)
         self.user_now.setGeometry(QtCore.QRect(610, 140, 501, 61))
-        font = QtGui.QFont()
-        font.setPointSize(20)
+        self.user_now.setObjectName("user_now")
         self.user_now.setFont(font)
 
         # Botones de apagado y reinicio
         self.shutdown = QtWidgets.QPushButton(self.centralwidget)
         self.shutdown.setGeometry(QtCore.QRect(1670, 900, 81, 71))
         self.shutdown.setObjectName("shutdown")
-        self.shutdown.clicked.connect(lambda: shutdown(self.login_screen, self))
+        self.shutdown.clicked.connect(lambda: shutdown())
 
         self.reboot = QtWidgets.QPushButton(self.centralwidget)
         self.reboot.setGeometry(QtCore.QRect(1780, 900, 71, 71))
         self.reboot.setObjectName("reboot")
-        self.shutdown.clicked.connect(lambda: reboot(self.login_screen, self))
+        self.reboot.clicked.connect(lambda: reboot(Main_Window))
 
         # Marco de la hora
         self.time_frame = QtWidgets.QFrame(self.centralwidget)
@@ -111,17 +111,28 @@ class Ui_Login_Window(object):
             return False
 
     def change_user(self):
+        self.user_combo = QtWidgets.QComboBox(self.group_box)
+        self.user_combo.setGeometry(QtCore.QRect(230, 510, 111, 31))
+        self.user_combo.setObjectName("user_combo")
         self.user_combo.clear()
         usuarios = self.config.get_users().values()
         for usuario in usuarios:
             self.user_combo.addItem(usuario.username)
         self.user_combo.show()
-        self.user_combo.activated[str].connect(self.user_selected)
 
-    def user_selected(self, username):
-        self.config.set_current_user(username)
-        self.user_now.setText(f"Current User: {config.current_user.username}")
-        self.user_combo.hide()
+        self.user_combo.activated[str].connect(lambda: self.change_user_action())
+    
+    def change_user_action(self):
+        if self.config.set_current_user(self.user_combo.currentText()):
+            self.reload()
+        
+    
+    def reload(self):
+        print("Reload")
+        self.user_now.setText(self.config.current_user.username)
+        print(self.config.current_user.photo)
+        set_photo(self.photo_box, self.config.current_user.photo)
+        
     
     def close(self):
         self.group_box.close()

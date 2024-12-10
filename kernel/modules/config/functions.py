@@ -63,6 +63,8 @@ class press_os:
     def set_current_user(self, username):
         self.current_user = self.usuarios.get(username)
         self.current_user_directory = self.current_user.user_path
+        return True
+        
 
 # # Ejemplo de uso
 # config = press_os()
