@@ -107,7 +107,7 @@ class Ui_Login_Window(object):
             print("Logged in")
             return True
         else:
-            self.password_input.setText('')
+            self.pass_input.setText('')
             return False
 
     def change_user(self):

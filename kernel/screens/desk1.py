@@ -38,6 +38,7 @@ class Ui_Desk_Window(object):
         self.apps_window.setFrameShadow(QtWidgets.QFrame.Raised)
         self.apps_window.setObjectName("apps_window")
         self.apps_window.hide()  # Ocultar inicialmente
+        
         # RGBBB para apps_window
         self.timer_window = QTimer(self.apps_window)
         self.timer_window.timeout.connect(lambda: actualizar_color_borde(self.apps_window))
@@ -98,7 +99,6 @@ class Ui_Desk_Window(object):
         self.time_desk = QtWidgets.QFrame(self.centralwidget)
         self.time_desk.setGeometry(QtCore.QRect(1530, 850, 361, 121))
         self.time_desk.setAutoFillBackground(False)
-        self.time_desk.setStyleSheet("")
         self.time_desk.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.time_desk.setFrameShadow(QtWidgets.QFrame.Raised)
         self.time_desk.setObjectName("time_desk")
@@ -113,15 +113,13 @@ class Ui_Desk_Window(object):
         layout.addWidget(self.date_label)
 
         # Configurar las propiedades de los labels
-        self.timer = QTimer(self)
+        self.timer = QTimer()
         self.timer.timeout.connect(lambda: update_time(self.time_label, self.date_label))
         self.timer.start(1000)  # Update every second
 
         # Initial update
         update_time(self.time_label, self.date_label)
 
-        # Apply styles
-        apply_styles(self, deskST)
         
         self.logo = QtWidgets.QFrame(self.centralwidget)
         self.logo.setGeometry(QtCore.QRect(1770, 10, 120, 180))
@@ -136,7 +134,6 @@ class Ui_Desk_Window(object):
             {"name" : "Music", "command": ["python" , "./apps/music.py"], "icon": "./graphic_resources/icons/music.png"},
             {"name": "Task Manager", "command": ["python" , "./apps/task.py"], "icon": "./graphic_resources/icons/task.png"},
             {"name": "Asistente", "command": ["python ", "./apps/assistant.py"], "icon": "./graphic_resources/icons/assist.png"},
-            {"name": "OtterBrowser", "command": ["python", "./apps/browser.py"], "icon": "./graphic_resources/icons/Otter_Browser.png"},
         ]
 
         # Agregar etiquetas a apps_bar

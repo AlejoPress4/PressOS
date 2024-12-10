@@ -10,7 +10,6 @@ QWidget#centralwidget {
     background-image: url('./graphic_resources/backgrounds/loginBG.jpg');
     background-repeat: no-repeat;
     background-position: center;
-    background-size: cover;
 }
 
 QPushButton#shutdown {
@@ -45,7 +44,6 @@ QWidget#centralwidget {
     background-image: url('./graphic_resources/backgrounds/deskBG.jpg');
     background-repeat: no-repeat;
     background-position: center;
-    background-size: cover;
 }
 
 

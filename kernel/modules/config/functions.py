@@ -65,12 +65,12 @@ class press_os:
         self.current_user_directory = self.current_user.user_path
 
 # # Ejemplo de uso
-config = press_os()
-print(config.login('TonTon','Molton321#'))
+# config = press_os()
+# print(config.login('TonTon','Molton321#'))
 # print(config.current_user.check_permissions('wirte'))
 # print(config.get_current_user())
 # print(config.get_user_directory())
 #config.add_user('hamburguesa', '1234', ['mostaza', 'ketchup', 'mayonesa', 'salsa de piña', 'BBQ'])
 #config.set_current_user('TonTon')
 
-print(config.get_current_user())
+# print(config.get_current_user())
