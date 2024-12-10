@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QPropertyAnimation, QRect, pyqtSignal, QTimer, QEasingCurve
+from PyQt5.QtCore import QPropertyAnimation, QRect, pyqtSignal, QTime, QDate, QTimer, QEasingCurve
 from PyQt5.QtWidgets import QLabel, QGraphicsOpacityEffect, QVBoxLayout, QHBoxLayout
 from PyQt5.QtGui import QPixmap, QColor
 from PyQt5 import QtCore
@@ -35,6 +35,17 @@ def animate_bubble(frame, duration):
     # Keep reference to animations to prevent garbage collection
     frame.geo_anim = geo_anim
     frame.opacity_anim = opacity_anim
+    
+def update_time(time_label, date_label):
+    current_time = QTime.currentTime()
+    current_date = QDate.currentDate()
+    
+    time_text = current_time.toString('hh:mm:ss')
+    date_text = current_date.toString('dddd, MMMM d, yyyy')
+    
+    time_label.setText(time_text)
+    date_label.setText(date_text)
+
 
 def add_labels_to_layout(applications, layout, parent, open_application, is_grid=False):
 	"""
@@ -76,8 +87,6 @@ def reboot(self):
     self.login_screen.refresh()
     self.desktop_screen.refresh()
     
-def open_asist(self):
-    self.asist_window.show()
     
 start_time = time.time()
 def actualizar_color_borde(frame):

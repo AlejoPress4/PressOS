@@ -1,5 +1,6 @@
 {
     "python.analysis.extraPaths": [
-        "./kernel/screens"
+        "./kernel/screens",
+        "./graphic_resources/styles"
     ]
 }

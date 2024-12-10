@@ -1,6 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import subprocess, cv2
-from kernel.modules.config.functions_ui import toggle_frames, add_labels_to_layout, ClickableLabel
+from kernel.modules.config.functions_ui import *
 from graphic_resources.styles.styles import *
 from kernel.modules.config.functions_ui import *
 from kernel.modules.config.functions import *
@@ -79,7 +79,8 @@ class Ui_Desk_Window(object):
         self.asist_btn.setGeometry(QtCore.QRect(940, 890, 91, 81))
         self.asist_btn.setText("")
         self.asist_btn.setObjectName("asist_btn")
-        self.asist_btn.clicked.connect(lambda: open_asist(self.asist_window))
+        self.asist_btn.clicked.connect(lambda: self.open_application(["python", "./apps/assistant.py"]))
+        
         
         # Crear el layout asist_window como QVBoxLayout
         self.asist_window_layout = QtWidgets.QVBoxLayout()
@@ -99,6 +100,26 @@ class Ui_Desk_Window(object):
         self.time_desk.setFrameShadow(QtWidgets.QFrame.Raised)
         self.time_desk.setObjectName("time_desk")
         
+        # Crear labels para mostrar la hora y la fecha
+        self.time_label = QtWidgets.QLabel(self.time_desk)
+        self.date_label = QtWidgets.QLabel(self.time_desk)
+
+        # Usar un QVBoxLayout para time_desk
+        layout = QtWidgets.QVBoxLayout(self.time_desk)
+        layout.addWidget(self.time_label)
+        layout.addWidget(self.date_label)
+
+        # Configurar las propiedades de los labels
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(lambda: update_time(self.time_label, self.date_label))
+        self.timer.start(1000)  # Update every second
+
+        # Initial update
+        update_time(self.time_label, self.date_label)
+
+        # Apply styles
+        apply_styles(self, deskST)
+        
         self.logo = QtWidgets.QFrame(self.centralwidget)
         self.logo.setGeometry(QtCore.QRect(1770, 10, 120, 180))
         self.logo.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -110,9 +131,9 @@ class Ui_Desk_Window(object):
             {"name": "Calculator", "command": ["python" , "./apps/calculator.py"], "icon": "./graphic_resources/icons/calculator.png"},
             {"name": "Photos", "command": ["python" , "./apps/photos.py"] , "icon": "./graphic_resources/icons/photos.png"},
             {"name" : "Music", "command": ["python" , "./apps/music.py"], "icon": "./graphic_resources/icons/music.png"},
-            {"name": "Task Manager", "command": ["python" , "./apps/task.py"], "icon": "./graphic_resources/icons/task.png"}, 
-            # {"name": }
-            # {"name": "", "command": [""]},
+            {"name": "Task Manager", "command": ["python" , "./apps/task.py"], "icon": "./graphic_resources/icons/task.png"},
+            {"name": "Asistente", "command": ["python ", "./apps/assistant.py"], "icon": "./graphic_resources/icons/assist.png"},
+            {"name": "OtterBrowser", "command": ["python", "./apps/browser.py"], "icon": "./graphic_resources/icons/Otter_Browser.png"},
         ]
 
         # Agregar etiquetas a apps_bar

@@ -33,9 +33,12 @@ class Ui_Login_Window(object):
         self.pushButton.setObjectName("pushButton")
 
         # Entrada de contraseña
-        self.pass_input = QtWidgets.QTextEdit(self.group_box)
+        self.pass_input = QtWidgets.QLineEdit(self.group_box)
         self.pass_input.setGeometry(QtCore.QRect(620, 340, 271, 31))
         self.pass_input.setObjectName("pass_input")
+        #nueva config de pass_input 
+        self.pass_input.setEchoMode(QtWidgets.QLineEdit.Password)
+        self.pass_input.returnPressed.connect(self.pushButton.click)
 
         # Marco de la foto
         self.photo_box = QtWidgets.QFrame(self.group_box)
