@@ -2,7 +2,7 @@ from PyQt5.QtCore import QPropertyAnimation, QRect, pyqtSignal, QTime, QDate, QT
 from PyQt5.QtWidgets import QLabel, QGraphicsOpacityEffect, QVBoxLayout, QHBoxLayout
 from PyQt5.QtGui import QPixmap, QColor
 from PyQt5 import QtCore
-from kernel.modules.config.users import usuarios
+from kernel.modules.config.functions import press_os
 import math, time
 def toggle_frames(frame1, frame2):
     frame1.hide()
@@ -117,7 +117,7 @@ def agregar_usuarios_a_frame(frame, on_user_selected):
     frame.setLayout(layout)
 
     # Agregar cada usuario al layout
-    for usuario in usuarios:
+    for usuario in press_os.usuarios.values():
         # Crear un layout horizontal para cada usuario
         user_layout = QHBoxLayout()
 

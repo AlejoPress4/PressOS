@@ -3,7 +3,7 @@ import subprocess
 import os, sys, cv2
 import json
 from PyQt5 import QtCore
-from users import Usuario
+from kernel.modules.config.users import Usuario
 
 class press_os:
     usuarios = {}

@@ -7,6 +7,9 @@ from kernel.modules.config.functions import *
 from apps import *
 
 class Ui_Desk_Window(object):
+    def __init__(self, config: press_os):
+        self.config = config
+        
     def setupUi(self, Desk_Window):
         Desk_Window.setObjectName("Desk_Window")
         # Desk_Window.resize(1920, 1080)
@@ -66,7 +69,7 @@ class Ui_Desk_Window(object):
         font = QtGui.QFont()
         font.setPointSize(20)
         self.user_lb.setFont(font)
-        self.user_lb.setText(f"User: {def_usr['username']}")
+        self.user_lb.setText(f"User: {self.config.current_user.username}")
         self.user_lb.setObjectName("user_lb")
         
         self.reboot = QtWidgets.QPushButton(self.options_apps)

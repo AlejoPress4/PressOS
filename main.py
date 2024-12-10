@@ -24,7 +24,7 @@ class Main(QMainWindow):
         self.login_screen = Ui_Login_Window(self.config)
         self.login_screen.setupUi(self)
         #self.login_screen.pushButton.clicked.connect(self.handle_login) 
-        self.login_screen.pass_lb.clicked.connect(lambda: self.show_desktop() if self.login_screen.login() else print("Nope"))
+        self.login_screen.pushButton.clicked.connect(lambda: self.show_desktop() if self.login_screen.login() else print("Nope"))
         self.show()
         
     # def handle_login(self):
@@ -37,11 +37,10 @@ class Main(QMainWindow):
     #         return False
 
         
-    def show_desktop(self, usuario):
+    def show_desktop(self):
         self.login_screen.close()
-        self.desktop_screen = Ui_Desk_Window()
+        self.desktop_screen = Ui_Desk_Window(self.config)
         self.desktop_screen.setupUi(self)
-        self.desktop_screen.usuario = usuario
         self.show()
 
 if __name__ == '__main__':
