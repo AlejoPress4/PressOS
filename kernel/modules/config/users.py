@@ -22,6 +22,9 @@ class Usuario:  # Diccionario de clase para almacenar los usuarios
             os.makedirs(os.path.join(user_path, folder), exist_ok=True)
 
         return user_path
+    
+    def check_permissions(self, permiso):
+        return permiso in self.permisos
 
     # Setters
     def set_username(self, username):

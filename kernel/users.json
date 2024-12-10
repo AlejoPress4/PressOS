@@ -29,15 +29,5 @@
         ],
         "photo": "./graphic_resources/photoProfile/mari.jpg",
         "user_path": "users_files\\Mari"
-    },
-    {
-        "username": "francisco",
-        "password": "1234",
-        "permisos": [
-            "admin",
-            "user"
-        ],
-        "photo": "photo.jpg",
-        "user_path": "users_files\\francisco"
     }
 ]
