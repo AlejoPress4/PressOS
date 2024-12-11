@@ -2,10 +2,11 @@ import sys
 import os
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, 
                              QPushButton, QListWidget, QLabel, QSlider, QFileDialog, 
-                             QGraphicsView, QGraphicsScene, QGraphicsEllipseItem)
-from PyQt5.QtGui import QIcon, QColor, QLinearGradient, QPainter, QPen, QBrush
-from PyQt5.QtCore import Qt, QUrl, QTimer, QPointF
+                             QGraphicsView, QGraphicsScene, QGraphicsEllipseItem, QMessageBox)
+from PyQt5.QtGui import QColor, QLinearGradient, QPainter, QBrush
+from PyQt5.QtCore import Qt, QUrl, QTimer
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QMediaPlaylist
+from kernel.modules.config.functions import press_os
 
 class VisualizerWidget(QGraphicsView):
     def __init__(self, parent=None):
@@ -32,54 +33,22 @@ class VisualizerWidget(QGraphicsView):
             height = (i + 1) * value / 5
             bar.setRect(i * 15, 100 - height, 10, height)
 
-class AdvancedMusicPlayer(QMainWindow):
+class MusicPlayer(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.initUI()
-
-    def initUI(self):
-        self.setWindowTitle('Reproductor de Música Avanzado')
+        
+        # Obtener el sistema y el usuario actual
+        self.sistema = press_os()
+        self.current_user = self.sistema.get_current_user()
+        
+        # Configurar la ventana
+        self.setWindowTitle(f'Reproductor de Música - {self.current_user.username}')
         self.setGeometry(100, 100, 800, 600)
-        self.setStyleSheet("""
-            QMainWindow, QWidget {
-                background-color: #1E1E1E;
-                color: #FFFFFF;
-            }
-            QPushButton {
-                background-color: #4A00E0;
-                color: #FFFFFF;
-                border: none;
-                padding: 10px;
-                margin: 5px;
-                border-radius: 20px;
-                font-weight: bold;
-            }
-            QPushButton:hover {
-                background-color: #6C14FF;
-            }
-            QListWidget {
-                background-color: #2D2D2D;
-                color: #FFFFFF;
-                border: none;
-                border-radius: 10px;
-                padding: 10px;
-            }
-            QSlider::groove:horizontal {
-                border: 1px solid #4A00E0;
-                height: 8px;
-                background: #2D2D2D;
-                margin: 2px 0;
-                border-radius: 4px;
-            }
-            QSlider::handle:horizontal {
-                background: #8E2DE2;
-                border: 1px solid #4A00E0;
-                width: 18px;
-                margin: -2px 0;
-                border-radius: 9px;
-            }
-        """)
 
+        # Configurar el directorio de música del usuario
+        self.music_directory = os.path.join(self.current_user.get_user_path(), 'Musica')
+
+        # Configurar widget central
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
         main_layout = QVBoxLayout(central_widget)
@@ -91,7 +60,6 @@ class AdvancedMusicPlayer(QMainWindow):
         # Now Playing
         self.current_song_label = QLabel("No hay canción reproduciendo")
         self.current_song_label.setAlignment(Qt.AlignCenter)
-        self.current_song_label.setStyleSheet("font-size: 18px; font-weight: bold; color: #8E2DE2;")
         main_layout.addWidget(self.current_song_label)
 
         # Progress Bar
@@ -147,16 +115,41 @@ class AdvancedMusicPlayer(QMainWindow):
         self.media_player.stateChanged.connect(self.state_changed)
         self.media_player.error.connect(self.handle_error)
 
+        # Cargar música inicial
+        self.load_initial_music()
+
         # Timer for visualizer update
         self.visualizer_timer = QTimer(self)
         self.visualizer_timer.timeout.connect(self.update_visualizer)
         self.visualizer_timer.start(100)
 
+    def load_initial_music(self):
+        # Cargar todas las canciones del directorio de música del usuario
+        supported_formats = ['.mp3', '.wav', '.ogg', '.flac']
+        for filename in os.listdir(self.music_directory):
+            if any(filename.lower().endswith(fmt) for fmt in supported_formats):
+                file_path = os.path.join(self.music_directory, filename)
+                self.playlist.addMedia(QMediaContent(QUrl.fromLocalFile(file_path)))
+                self.playlist_widget.addItem(filename)
+
     def add_music(self):
-        files, _ = QFileDialog.getOpenFileNames(self, "Seleccionar archivos de música", "", "Audio Files (*.mp3 *.wav *.ogg)")
+        # Abrir diálogo para seleccionar archivos de música
+        files, _ = QFileDialog.getOpenFileNames(
+            self, 
+            "Seleccionar archivos de música", 
+            self.music_directory, 
+            "Audio Files (*.mp3 *.wav *.ogg *.flac)"
+        )
+        
         for file in files:
+            # Copiar archivos al directorio de música del usuario si no están ya ahí
+            if os.path.dirname(file) != self.music_directory:
+                import shutil
+                shutil.copy(file, self.music_directory)
+            
+            filename = os.path.basename(file)
             self.playlist.addMedia(QMediaContent(QUrl.fromLocalFile(file)))
-            self.playlist_widget.addItem(os.path.basename(file))
+            self.playlist_widget.addItem(filename)
 
     def play_selected(self):
         self.playlist.setCurrentIndex(self.playlist_widget.currentRow())
@@ -179,40 +172,53 @@ class AdvancedMusicPlayer(QMainWindow):
 
     def position_changed(self, position):
         self.progress_slider.setValue(position)
-
+        
     def duration_changed(self, duration):
-        self.progress_slider.setRange(0, duration)
-
-    def state_changed(self, state):
-        if state == QMediaPlayer.PlayingState:
-            self.play_pause_button.setText("⏸")
-            self.current_song_label.setText(self.playlist_widget.currentItem().text())
-        else:
-            self.play_pause_button.setText("▶")
+        self.progress_slider.setMaximum(duration)
 
     def set_volume(self, volume):
         self.media_player.setVolume(volume)
 
     def toggle_shuffle(self):
-        if self.playlist.playbackMode() == QMediaPlaylist.Sequential:
+        # Alternar modo aleatorio
+        current_mode = self.playlist.playbackMode()
+        if current_mode == QMediaPlaylist.Sequential:
             self.playlist.setPlaybackMode(QMediaPlaylist.Random)
-            self.shuffle_button.setStyleSheet("background-color: #8E2DE2;")
+            self.shuffle_button.setText("🔀 (ON)")
         else:
             self.playlist.setPlaybackMode(QMediaPlaylist.Sequential)
-            self.shuffle_button.setStyleSheet("")
+            self.shuffle_button.setText("🔀")
+
+    def state_changed(self, state):
+        if state == QMediaPlayer.PlayingState:
+            self.play_pause_button.setText("⏸")
+            # Actualizar la etiqueta de la canción actual
+            current_index = self.playlist.currentIndex()
+            if current_index != -1:
+                self.current_song_label.setText(
+                    self.playlist_widget.item(current_index).text()
+                )
+        elif state == QMediaPlayer.PausedState:
+            self.play_pause_button.setText("▶")
+        elif state == QMediaPlayer.StoppedState:
+            self.play_pause_button.setText("▶")
 
     def update_visualizer(self):
-        if self.media_player.state() == QMediaPlayer.PlayingState:
-            value = self.media_player.position() / self.media_player.duration() * 100
-            self.visualizer.update_visualizer(value)
+        # Simular visualización de audio
+        current_volume = self.media_player.volume()
+        self.visualizer.update_visualizer(current_volume)
 
-    def handle_error(self):
-        error_message = self.media_player.errorString()
-        self.current_song_label.setText(f"Error: {error_message}")
-        print(f"Error: {error_message}")
+    def handle_error(self, error):
+        # Manejar errores de reproducción
+        print(f"Error de reproducción: {error}")
+        QMessageBox.warning(self, "Error de Reproducción", 
+                             "No se pudo reproducir la canción.")
 
-if __name__ == '__main__':
+def main():
     app = QApplication(sys.argv)
-    player = AdvancedMusicPlayer()
+    player = MusicPlayer()
     player.show()
     sys.exit(app.exec_())
+
+if __name__ == '__main__':
+    main()

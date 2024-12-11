@@ -7,6 +7,7 @@ import math, time
 import sys
 import os
 from PyQt5.QtWidgets import QApplication
+import subprocess
 
 def toggle_frames(frame1, frame2):
     frame1.hide()
@@ -156,5 +157,4 @@ def reboot(window: QWidget):
     os.execl(python, python, *sys.argv)
     
 def open_assistant():
-    import subprocess
     subprocess.Popen(["python", "./apps/assistant.py"])

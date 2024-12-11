@@ -1,200 +1,217 @@
 import sys
 import os
-import shutil
-from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, 
-                             QListView, QTreeView, QFileSystemModel, QToolBar, QAction, 
-                             QInputDialog, QMessageBox, QLineEdit, QMenu, QSplitter)
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import Qt, QDir, QUrl
-from PyQt5.QtGui import QDesktopServices
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QTreeView, QFileSystemModel, 
+                             QVBoxLayout, QHBoxLayout, QWidget, QMenu, QAction, QMessageBox, QFileDialog,
+                             QLineEdit, QPushButton, QLabel, QSplitter)
+from PyQt5.QtCore import QDir, Qt, QSize
+from PyQt5.QtGui import QIcon, QFont
 from kernel.modules.config.functions import press_os
 
 class FileManager(QMainWindow):
-    def __init__(self, press_os_instance):
+    def __init__(self):
         super().__init__()
-        self.press_os_instance = press_os_instance
-        self.current_path = self.press_os_instance.get_current_user_directory()
-        self.initUI()
+        
+        # Obtener el sistema y el usuario actual
+        self.sistema = press_os()
+        self.current_user = self.sistema.get_current_user()
+        
+        # Configurar la ventana
+        self.setWindowTitle(f'Gestor de Archivos - {self.current_user.get_username()}')
+        self.setGeometry(300, 300, 1000, 700)
 
-    def initUI(self):
-        self.setWindowTitle('Administrador de Archivos')
-        self.setGeometry(100, 100, 800, 600)
+        # Configurar el modelo de sistema de archivos
+        self.model = QFileSystemModel()
+        self.model.setRootPath(QDir.rootPath())
+        
+        # Establecer el directorio raíz del usuario
+        self.user_directory = self.current_user.get_user_path()
 
-        # Toolbar
-        self.toolbar = QToolBar()
-        self.addToolBar(self.toolbar)
+        # Crear el layout principal
+        main_layout = QVBoxLayout()
 
-        # Back action
-        back_action = QAction(QIcon.fromTheme('go-previous'), 'Back', self)
-        back_action.triggered.connect(self.go_back)
-        self.toolbar.addAction(back_action)
+        # Crear la barra de herramientas
+        toolbar_layout = QHBoxLayout()
+        self.path_input = QLineEdit(self.user_directory)
+        self.path_input.returnPressed.connect(self.navigate_to_path)
+        go_button = QPushButton("Ir")
+        go_button.clicked.connect(self.navigate_to_path)
+        toolbar_layout.addWidget(QLabel("Ruta:"))
+        toolbar_layout.addWidget(self.path_input)
+        toolbar_layout.addWidget(go_button)
 
-        # Forward action
-        forward_action = QAction(QIcon.fromTheme('go-next'), 'Forward', self)
-        forward_action.triggered.connect(self.go_forward)
-        self.toolbar.addAction(forward_action)
+        main_layout.addLayout(toolbar_layout)
 
-        # Up action
-        up_action = QAction(QIcon.fromTheme('go-up'), 'Up', self)
-        up_action.triggered.connect(self.go_up)
-        self.toolbar.addAction(up_action)
+        # Crear el árbol de vista
+        self.tree = QTreeView()
+        self.tree.setModel(self.model)
+        self.tree.setRootIndex(self.model.index(self.user_directory))
+        
+        # Configurar columnas y menú contextual
+        self.tree.setColumnWidth(0, 250)
+        self.tree.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.tree.customContextMenuRequested.connect(self.open_context_menu)
 
-        # Address bar
-        self.address_bar = QLineEdit()
-        self.address_bar.returnPressed.connect(self.navigate_to_path)
-        self.toolbar.addWidget(self.address_bar)
+        # Crear un QSplitter para permitir redimensionar las columnas
+        splitter = QSplitter()
+        splitter.addWidget(self.tree)
 
-        # Search bar
-        self.search_bar = QLineEdit()
-        self.search_bar.setPlaceholderText('Search...')
-        self.search_bar.returnPressed.connect(self.search_files)
-        self.toolbar.addWidget(self.search_bar)
+        main_layout.addWidget(splitter)
 
-        # Splitter for tree view and list view
-        splitter = QSplitter(Qt.Horizontal)
-        layout = QVBoxLayout()
-        layout.addWidget(splitter)
+        # Configurar widget central
+        container = QWidget()
+        container.setLayout(main_layout)
+        self.setCentralWidget(container)
 
-        # Tree view
-        self.tree_view = QTreeView()
-        self.tree_model = QFileSystemModel()
-        self.tree_model.setRootPath('')
-        self.tree_view.setModel(self.tree_model)
-        self.tree_view.setRootIndex(self.tree_model.index(self.current_path))
-        self.tree_view.clicked.connect(self.tree_item_clicked)
-        splitter.addWidget(self.tree_view)
-
-        # List view
-        self.list_view = QListView()
-        self.list_model = QFileSystemModel()
-        self.list_model.setRootPath('')
-        self.list_view.setModel(self.list_model)
-        self.list_view.setRootIndex(self.list_model.index(self.current_path))
-        self.list_view.doubleClicked.connect(self.list_item_double_clicked)
-        self.list_view.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.list_view.customContextMenuRequested.connect(self.show_context_menu)
-        splitter.addWidget(self.list_view)
-
-        # Central widget and layout
-        central_widget = QWidget()
-        central_widget.setLayout(layout)
-        self.setCentralWidget(central_widget)
-
-        # Status bar
-        self.statusBar().showMessage('Ready')
-
-        self.update_address_bar()
-
-    def update_address_bar(self):
-        self.address_bar.setText(self.current_path)
+        self.apply_styles()
 
     def navigate_to_path(self):
-        path = self.address_bar.text()
+        path = self.path_input.text()
         if os.path.exists(path):
-            self.current_path = path
-            self.list_view.setRootIndex(self.list_model.index(path))
-            self.update_address_bar()
+            self.tree.setRootIndex(self.model.index(path))
         else:
-            QMessageBox.warning(self, 'Error', 'Invalid path')
+            QMessageBox.warning(self, 'Error', 'La ruta especificada no existe.')
 
-    def go_back(self):
-        # Implement back functionality
-        pass
+    def open_context_menu(self, position):
+        indexes = self.tree.selectedIndexes()
+        if indexes:
+            file_path = self.model.filePath(indexes[0])
+            menu = QMenu()
 
-    def go_forward(self):
-        # Implement forward functionality
-        pass
+            # Acción de Abrir
+            open_action = QAction(QIcon.fromTheme("document-open"), "Abrir", self)
+            open_action.triggered.connect(lambda: self.open_file(file_path))
+            menu.addAction(open_action)
 
-    def go_up(self):
-        parent = os.path.dirname(self.current_path)
-        if parent != self.current_path:
-            self.current_path = parent
-            self.list_view.setRootIndex(self.list_model.index(parent))
-            self.update_address_bar()
+            # Acción de Eliminar
+            delete_action = QAction(QIcon.fromTheme("edit-delete"), "Eliminar", self)
+            delete_action.triggered.connect(lambda: self.delete_file(file_path))
+            menu.addAction(delete_action)
 
-    def tree_item_clicked(self, index):
-        path = self.tree_model.filePath(index)
-        self.current_path = path
-        self.list_view.setRootIndex(self.list_model.index(path))
-        self.update_address_bar()
+            # Acción de Nuevo archivo
+            new_file_action = QAction(QIcon.fromTheme("document-new"), "Nuevo Archivo", self)
+            new_file_action.triggered.connect(lambda: self.create_new_file(file_path))
+            menu.addAction(new_file_action)
 
-    def list_item_double_clicked(self, index):
-        path = self.list_model.filePath(index)
-        if os.path.isdir(path):
-            self.current_path = path
-            self.list_view.setRootIndex(index)
-            self.update_address_bar()
+            # Acción de Nueva carpeta
+            new_folder_action = QAction(QIcon.fromTheme("folder-new"), "Nueva Carpeta", self)
+            new_folder_action.triggered.connect(lambda: self.create_new_folder(file_path))
+            menu.addAction(new_folder_action)
+
+            menu.exec_(self.tree.viewport().mapToGlobal(position))
+
+    def open_file(self, file_path):
+        if os.path.isfile(file_path):
+            os.startfile(file_path)
         else:
-            # Open file with default application
-            QDesktopServices.openUrl(QUrl.fromLocalFile(path))
+            QMessageBox.warning(self, 'Error', 'No se puede abrir el archivo.')
 
-    def show_context_menu(self, position):
-        menu = QMenu()
-        new_file_action = menu.addAction("New File")
-        new_folder_action = menu.addAction("New Folder")
-        rename_action = menu.addAction("Rename")
-        delete_action = menu.addAction("Delete")
+    def delete_file(self, file_path):
+        try:
+            # Confirmación de eliminación
+            reply = QMessageBox.question(self, 'Confirmar', 
+                                         '¿Está seguro que desea eliminar este archivo/carpeta?',
+                                         QMessageBox.Yes | QMessageBox.No)
+            
+            if reply == QMessageBox.Yes:
+                if os.path.isfile(file_path):
+                    os.remove(file_path)
+                elif os.path.isdir(file_path):
+                    import shutil
+                    shutil.rmtree(file_path)
+                
+                QMessageBox.information(self, 'Éxito', 'Archivo/Carpeta eliminado correctamente.')
+        except Exception as e:
+            QMessageBox.warning(self, 'Error', f'No se pudo eliminar: {e}')
+
+    def create_new_file(self, current_path):
+        # Si es un archivo, usar su directorio padre
+        if os.path.isfile(current_path):
+            current_path = os.path.dirname(current_path)
         
-        action = menu.exec_(self.list_view.mapToGlobal(position))
+        # Diálogo para nombrar el archivo
+        file_name, ok = QFileDialog.getSaveFileName(self, "Crear Nuevo Archivo", 
+                                                    current_path, 
+                                                    "Todos los archivos (*.*)")
         
-        if action == new_file_action:
-            self.create_new_file()
-        elif action == new_folder_action:
-            self.create_new_folder()
-        elif action == rename_action:
-            self.rename_item()
-        elif action == delete_action:
-            self.delete_item()
+        if ok:
+            try:
+                with open(file_name, 'w') as f:
+                    pass  # Crear archivo vacío
+                QMessageBox.information(self, 'Éxito', f'Archivo {file_name} creado.')
+            except Exception as e:
+                QMessageBox.warning(self, 'Error', f'No se pudo crear el archivo: {e}')
 
-    def create_new_file(self):
-        file_name, ok = QInputDialog.getText(self, "New File", "Enter file name:")
-        if ok and file_name:
-            file_path = os.path.join(self.current_path, file_name)
-            with open(file_path, 'w') as f:
-                pass
-            self.list_model.setRootPath('')
+    def create_new_folder(self, current_path):
+        # Si es un archivo, usar su directorio padre
+        if os.path.isfile(current_path):
+            current_path = os.path.dirname(current_path)
+        
+        # Diálogo para nombrar la carpeta
+        folder_name = QFileDialog.getExistingDirectory(self, "Crear Nueva Carpeta", current_path)
+        
+        if folder_name:
+            try:
+                os.makedirs(folder_name)
+                QMessageBox.information(self, 'Éxito', f'Carpeta {folder_name} creada.')
+            except Exception as e:
+                QMessageBox.warning(self, 'Error', f'No se pudo crear la carpeta: {e}')
 
-    def create_new_folder(self):
-        folder_name, ok = QInputDialog.getText(self, "New Folder", "Enter folder name:")
-        if ok and folder_name:
-            folder_path = os.path.join(self.current_path, folder_name)
-            os.makedirs(folder_path)
-            self.list_model.setRootPath('')
+    def apply_styles(self):
+        self.setStyleSheet("""
+            QMainWindow {
+                background-color: #f0f0f0;
+            }
+            QTreeView {
+                background-color: white;
+                border: 1px solid #d0d0d0;
+                font-size: 14px;
+            }
+            QTreeView::item {
+                padding: 5px;
+            }
+            QTreeView::item:hover {
+                background-color: #e6f3ff;
+            }
+            QTreeView::item:selected {
+                background-color: #0078d7;
+                color: white;
+            }
+            QLineEdit {
+                padding: 5px;
+                border: 1px solid #d0d0d0;
+                border-radius: 3px;
+            }
+            QPushButton {
+                background-color: #0078d7;
+                color: white;
+                padding: 5px 10px;
+                border: none;
+                border-radius: 3px;
+            }
+            QPushButton:hover {
+                background-color: #005fa3;
+            }
+            QLabel {
+                font-size: 14px;
+            }
+            QMenu {
+                background-color: white;
+                border: 1px solid #d0d0d0;
+            }
+            QMenu::item {
+                padding: 5px 20px 5px 20px;
+            }
+            QMenu::item:selected {
+                background-color: #0078d7;
+                color: white;
+            }
+        """)
 
-    def rename_item(self):
-        index = self.list_view.currentIndex()
-        if not index.isValid():
-            return
-        old_path = self.list_model.filePath(index)
-        new_name, ok = QInputDialog.getText(self, "Rename", "Enter new name:")
-        if ok and new_name:
-            new_path = os.path.join(os.path.dirname(old_path), new_name)
-            os.rename(old_path, new_path)
-            self.list_model.setRootPath('')
-
-    def delete_item(self):
-        index = self.list_view.currentIndex()
-        if not index.isValid():
-            return
-        file_path = self.list_model.filePath(index)
-        reply = QMessageBox.question(self, 'Delete', f"Are you sure you want to delete {file_path}?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        if reply == QMessageBox.Yes:
-            if os.path.isdir(file_path):
-                os.rmdir(file_path)
-            else:
-                os.remove(file_path)
-            self.list_model.setRootPath('')
-
-    def search_files(self):
-        search_term = self.search_bar.text()
-        if search_term:
-            # Implement file search functionality
-            pass
+def main():
+    app = QApplication(sys.argv)
+    file_manager = FileManager()
+    file_manager.show()
+    sys.exit(app.exec_())
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    press_os_instance = press_os()
-    if press_os_instance.login("Press", "0424"):  # Ejemplo de login
-        file_manager = FileManager(press_os_instance)
-        file_manager.show()
-        sys.exit(app.exec_())
+    main()

@@ -42,10 +42,6 @@ class AsistenteGUI(QMainWindow):
         
         main_layout.addLayout(input_layout)
         
-        # Aplicar estilos
-        self.apply_styles()
-
-    def apply_styles(self):
         # Estilos generales
         self.setStyleSheet("""
             QMainWindow {

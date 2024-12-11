@@ -83,7 +83,7 @@ class Ui_Desk_Window(object):
         self.asist_btn = QtWidgets.QPushButton(self.centralwidget)
         self.asist_btn.setGeometry(QtCore.QRect(940, 890, 91, 81))
         self.asist_btn.setObjectName("asist_btn")
-        self.asist_btn.clicked.connect(open_assistant())
+        self.asist_btn.clicked.connect(open_assistant)
 
 
         self.time_desk = QtWidgets.QFrame(self.centralwidget)
@@ -123,7 +123,8 @@ class Ui_Desk_Window(object):
             {"name": "Photos", "command": ["python" , "./apps/photos.py"] , "icon": "./graphic_resources/icons/photos.png"},
             {"name" : "Music", "command": ["python" , "./apps/music.py"], "icon": "./graphic_resources/icons/music.png"},
             {"name": "Task Manager", "command": ["python" , "./apps/task.py"], "icon": "./graphic_resources/icons/task.png"},
-            {"name": "Asistente", "command": ["python ", "./apps/assistant.py"], "icon": "./graphic_resources/icons/assist.png"},
+            {"name": "Browser", "command": ["python", "./apps/browser.py"], "icon": "./graphic_resources/icons/Otter_Browser.png"},
+            {"name": "Files", "command": ["python", "./apps/files.py"], "icon": "./graphic_resources/icons/folder.png"},
         ]
 
         # Agregar etiquetas a apps_bar
