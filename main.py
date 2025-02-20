@@ -35,3 +35,5 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     main_window = Main()
     sys.exit(app.exec_())
+
+    #mari te amo
